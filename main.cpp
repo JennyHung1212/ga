@@ -276,22 +276,46 @@ void FLSC :: shuffle (int* x){
 
 void FLSC :: crossover (){
 
-    srand((unsigned)time(NULL));
-    int breakPoint = rand()%parkNum;
 
 
+    for (int i = 0; i < poolLength/2; i++)
+    {
+        for (int j = 0; j < parkNum/2; j++)
+        {
+            kid_pool[2*i][j] = parent_pool[2*i][j];
+        }
+
+        for (int j = parkNum/2; j < parkNum; j++)
+        {
+            kid_pool[2*i][j] = parent_pool[2*i+1][j];
+        }
+
+    }
 
 
+    for (int i = 1; i < poolLength/2; i++)
+    {
+        for (int j = 0; j < poolLength/2; j++)
+        {
+            kid_pool[2*i-1][j] = parent_pool[2*i-1][j];
+        }
 
+        for (int j = parkNum/2; j < parkNum; j++)
+        {
+            kid_pool[2*i-1][j] = parent_pool[2*i-2][j];
+        }
+        
+    }
 
+    for (int i = 0; i < parkNum; i++)
+    {       
+        kid_pool[poolLength-1][i] = parent_pool[poolLength-1][i];
+    }
 
-
-
-
-
-
-
-
+    for (int i = parkNum/2; i < parkNum; i++)
+    {       
+        kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
+    }
 
 
 }
@@ -311,7 +335,8 @@ void FLSC :: display(){
     {
         for (int j = 0; j < parkNum; j++)
         {
-            cout<<parent_pool[i][j]<<" ";
+            //cout<<parent_pool[i][j]<<" ";
+            cout<<kid_pool[i][j]<<" ";
         }
         cout<<endl;
     }
@@ -319,8 +344,6 @@ void FLSC :: display(){
 }
 
 double FLSC :: fitness(){
-
-    
 
 
     
@@ -336,7 +359,7 @@ int main(int argc,char* argv[]) {
     parameter();
     test.original_gene(S);
     // test.display();
-    //test.crossover();
+    test.crossover();
     test.display();
 	// parameter();
 
