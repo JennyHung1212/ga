@@ -25,7 +25,7 @@ public:
 
     FLSC();
     FLSC(int man, int park, int facility);
-    void original_gene(int** SS);
+    void original_gene(int** parent_pool, int parkNum, int** SS);
     void shuffle (int* x);
     void crossover (int** parent_pool);
 
@@ -50,7 +50,7 @@ void FLSC :: original_gene(int** S){
 	int scale = 0;
     srand(unsigned(time(NULL)));
     for(int i=0; i<poolLength; i++){
-        for(int j=0; j< parkNum; j++){
+        for(int j=0; j< park_num; j++){
         	while(true){
 	        	scale = rand()%6;
 	        	if(S[j][scale] == 1){
@@ -63,7 +63,7 @@ void FLSC :: original_gene(int** S){
         }
     }
     for(int i=0; i<poolLength; i++){
-        for(int j=0; j<parkNum; j++){
+        for(int j=0; j<park_num; j++){
             cout<<parent_pool[i][j]<<" ";
         }
         cout<<endl;
@@ -156,6 +156,6 @@ int main(int argc,char* argv[]) {
 
 	parameter();
 	FLSC GA(MAN, PARK, FACILITY);
-	GA.original_gene(S);
+	GA.original_gene(parent_pool, PARK, S);
 	return 0;
 }
