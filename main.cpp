@@ -179,6 +179,8 @@ private:
     int** facility_floor_area;
 
 
+    int** kid_pool;
+
 public:
 
 
@@ -192,19 +194,22 @@ public:
 
     double fitness();
 
+    void mutation();
+
 };
 
 FLSC :: FLSC (int man, int park, int facility){
 
-    //poolLength=20;
     manNum = man;
     parkNum = park;
     facilityNum = facility;
 
     parent_pool = new int *[75];
+    kid_pool = new int* [75];
 
     for (int i = 0; i<75; i++) {
         parent_pool[i] = new int[parkNum];
+        kid_pool[i] = new int[parkNum];
     }
 
      for (int i = 0; i < 75; i++)
@@ -212,6 +217,7 @@ FLSC :: FLSC (int man, int park, int facility){
         for (int j = 0; j < parkNum; j++)
         {
             parent_pool[i][j]=0;
+            kid_pool[i][j]=0;
         }
     }
 
@@ -224,7 +230,6 @@ FLSC :: FLSC (int man, int park, int facility){
     		facility_floor_area[i][j]=0;
     	}
     }
-
 
 }
 
@@ -273,67 +278,59 @@ void FLSC :: shuffle (int* x){
 
 void FLSC :: crossover (){
 
-    int randomIndex [poolLength];
 
-    for (int i = 0; i < poolLength; i++)
+
+    for (int i = 0; i < poolLength/2; i++)
     {
-        randomIndex [i] = 0;
-    }
-
-    for (int i = 0; i < poolLength ; i++)
-    {
-        randomIndex[i]=i;
-    }
-
-    for (int i = 0; i < 4 ; i++)
-    {
-        shuffle(randomIndex);
-
-        for (int j = 0; j < parkNum/2 ; j++)
+        for (int j = 0; j < parkNum/2; j++)
         {
-            if (i==0)
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+poolLength][j]=parent_pool[randomIndex[k]][j];
-                }
-            }
-
-            if (i==1)
-            {
-
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
-                }    
-            }
-
-            if (i==2)
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+2*poolLength][j]=parent_pool[randomIndex[k]][j];
-                }
-            }
-            else
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+2*poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
-                }
-
-            }
+            kid_pool[2*i][j] = parent_pool[2*i][j];
         }
+
+        for (int j = parkNum/2; j < parkNum; j++)
+        {
+            kid_pool[2*i][j] = parent_pool[2*i+1][j];
+        }
+
     }
 
-}
+
+    for (int i = 1; i < poolLength/2; i++)
+    {
+        for (int j = 0; j < poolLength/2; j++)
+        {
+            kid_pool[2*i-1][j] = parent_pool[2*i-1][j];
+        }
+
+        for (int j = parkNum/2; j < parkNum; j++)
+        {
+            kid_pool[2*i-1][j] = parent_pool[2*i-2][j];
+        }
+        
+    }
+
+    for (int i = 0; i < parkNum; i++)
+    {       
+        kid_pool[poolLength-1][i] = parent_pool[poolLength-1][i];
+    }
+
+    for (int i = parkNum/2; i < parkNum; i++)
+    {       
+        kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
+    }
 
 
+<<<<<<< HEAD
 int** FLSC :: randomZ(int** q, int** T, int num){
 	int denominator = 0;	
 	int is_zero = 0;
 	time_t xx;
 	srand((unsigned)time(NULL));
+=======
+}
+void FLSC :: randomZ(int** q, int** S){
+	int denominator = 0;
+>>>>>>> 1248877f1004b569f8d6fd98679337e1b3b8439f
 	for(int i = 0; i < PARK; i++){
 
 		if(parent_pool[num][i] != 0){
@@ -393,7 +390,8 @@ void FLSC :: display(){
     {
         for (int j = 0; j < parkNum; j++)
         {
-            cout<<parent_pool[i][j]<<" ";
+            //cout<<parent_pool[i][j]<<" ";
+            cout<<kid_pool[i][j]<<" ";
         }
         cout<<endl;
     }
@@ -402,11 +400,39 @@ void FLSC :: display(){
 
 double FLSC :: fitness(){
 
-    
-
 
     
 }
+
+
+
+void FLSC :: mutation(){
+
+    const int mutationPosibility = 3;
+
+    for (int i = 0; i < poolLength; i++)
+    {
+        for (int j = 0; j < parkNum; j++)
+        {
+            int r = rand()%100;
+
+            if (r<mutationPosibility)
+            {
+               int muNum = rand()%6;
+               while (muNum==kid_pool[i][j])
+               {
+                   muNum=rand()%6;
+                   kid_pool[i][j]=muNum;
+               }
+
+            }
+        }
+    }
+}
+
+
+
+
 
 
 int main(int argc,char* argv[]) {
@@ -427,8 +453,13 @@ int main(int argc,char* argv[]) {
     }*/
     test.randomZ(q, T, 1);
     // test.display();
+<<<<<<< HEAD
     //test.crossover();
     //test.display();
+=======
+    test.crossover();
+    test.display();
+>>>>>>> 1248877f1004b569f8d6fd98679337e1b3b8439f
 	// parameter();
 
 
