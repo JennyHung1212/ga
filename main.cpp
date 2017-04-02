@@ -31,6 +31,21 @@ public:
 
 };
 
+FLSC :: FLSC (int man, int park, int facility){
+
+    manNum = man;
+    parkNum = park;
+    facilityNum = facility;
+
+    parent_pool = new int *[75];
+
+    for (int i = 0; i<75; i++) {
+        parent_pool[i] = new bool[parkNum];
+    }
+
+}
+
+
 void FLSC :: original_gene(int** parent_pool, int park_num){
     srand(unsigned(time(NULL)));
     for(int i=0; i<poolLength; i++){
