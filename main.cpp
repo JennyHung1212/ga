@@ -9,6 +9,7 @@
 using namespace std;
 
 
+const int poolLength =25;
 class FLSC {
 
 private:
@@ -151,6 +152,7 @@ int MAN;
 int PARK;
 int FACILITY;
 int SCALE = 5;
+
 
 double*** p;
 int** S;
@@ -316,6 +318,7 @@ int main(int argc,char* argv[]) {
     test.display();
 
 	// parameter();
+    //
 
 
 	return 0;
