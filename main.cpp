@@ -174,10 +174,11 @@ private:
     int manNum;
     int parkNum;
     int facilityNum;
-    //int poolLength;
     int** parent_pool;
     int** facility_floor_area;
 
+
+    int** kid_pool;
 
 public:
 
@@ -196,18 +197,16 @@ public:
 
 FLSC :: FLSC (int man, int park, int facility){
 
-<<<<<<< HEAD
-=======
-    //poolLength=20;
->>>>>>> cd3d55fa4101f6666295c8b35f3d3bf775f09826
     manNum = man;
     parkNum = park;
     facilityNum = facility;
 
     parent_pool = new int *[75];
+    kid_pool = new int* [75];
 
     for (int i = 0; i<75; i++) {
         parent_pool[i] = new int[parkNum];
+        kid_pool[i] = new int[parkNum];
     }
 
      for (int i = 0; i < 75; i++)
@@ -215,6 +214,7 @@ FLSC :: FLSC (int man, int park, int facility){
         for (int j = 0; j < parkNum; j++)
         {
             parent_pool[i][j]=0;
+            kid_pool[i][j]=0;
         }
     }
 
@@ -276,64 +276,25 @@ void FLSC :: shuffle (int* x){
 
 void FLSC :: crossover (){
 
-    int randomIndex [poolLength];
+    srand((unsigned)time(NULL));
+    int breakPoint = rand()%parkNum;
 
-    for (int i = 0; i < poolLength; i++)
-    {
-        randomIndex [i] = 0;
-    }
 
-    for (int i = 0; i < poolLength ; i++)
-    {
-        randomIndex[i]=i;
-    }
 
-    for (int i = 0; i < 4 ; i++)
-    {
-        shuffle(randomIndex);
 
-        for (int j = 0; j < parkNum/2 ; j++)
-        {
-            if (i==0)
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+poolLength][j]=parent_pool[randomIndex[k]][j];
-                }
-            }
 
-            if (i==1)
-            {
 
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
-                }    
-            }
 
-            if (i==2)
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+2*poolLength][j]=parent_pool[randomIndex[k]][j];
-                }
-            }
-            else
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+2*poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
-                }
 
-            }
-        }
-    }
+
+
+
+
+
+
+
 
 }
-
-
-<<<<<<< HEAD
-=======
 void FLSC :: randomZ(int** q, int** S){
 	int denominator = 0;
 	for(int i = 0; i < PARK; i++){
@@ -342,7 +303,6 @@ void FLSC :: randomZ(int** q, int** S){
 		}
 	}
 }
->>>>>>> cd3d55fa4101f6666295c8b35f3d3bf775f09826
 
 void FLSC :: display(){
 
