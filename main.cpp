@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <limits>
 using namespace std;
 
 /* global variable*/
@@ -188,7 +189,7 @@ public:
     void original_gene(int** S);
     void shuffle (int* x);
     void crossover ();
-    void randomZ(int** q, int** S);
+    int** randomZ(int** q, int** T, int num);
     void display ();
 
     double fitness();
@@ -318,15 +319,65 @@ void FLSC :: crossover (){
         kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
     }
 
-
 }
-void FLSC :: randomZ(int** q, int** S){
-	int denominator = 0;
+
+int** FLSC :: randomZ(int** q, int** T, int num){
+	int denominator = 0;	
+	int is_zero = 0;
+	time_t xx;
+	srand((unsigned)time(NULL));
+
+
 	for(int i = 0; i < PARK; i++){
-		for(int j = 0; j < FACILITY; j++){
+
+		if(parent_pool[num][i] != 0){
+			denominator = q[i][parent_pool[num][i]-1];
+			is_zero = 0;
+		}else{
+			is_zero = 1;
+			denominator = 0;
+		}
+		
+		//cout<<"DENOMINATOR: "<<denominator<<endl;
+		//cout<<"IS_ZERO: "<<is_zero<<endl;
+
+		while(1){
+					
+			for(int j = 0; j < FACILITY; j++){
+				if(denominator != 0 && T[i][j] != 0){
+					if(is_zero == 0){
+						
+						facility_floor_area[i][j] = rand()%denominator;
+					}else{
+						facility_floor_area[i][j] = 0;
+					}
+					
+				}else{
+					facility_floor_area[i][j] = 0;
+				}				
+			}
+			int sum = 0;
+			if(is_zero == 1){
+				break;
+			}else{
+				for(int j =0; j<FACILITY; j++){
+					sum = sum + facility_floor_area[i][j];
+				}
+			}
+			if(sum < denominator){
+				break;
+			}
 			
 		}
+
 	}
+	return facility_floor_area;
+	/*for(int i = 0; i < PARK; i++){
+		for(int j = 0; j < FACILITY; j++){
+			cout<<facility_floor_area[i][j]<<" ";
+		}
+		cout<<endl;
+	}*/
 }
 
 void FLSC :: display(){
@@ -389,9 +440,22 @@ int main(int argc,char* argv[]) {
     FLSC test(MAN,PARK,FACILITY);
     parameter();
     test.original_gene(S);
+
+    //cout<<"randomZ~~~~~~~"<<endl;
+    /*for(int i=0; i<PARK; i++){
+    	for(int j=0; j<5; j++){
+    		cout<<q[i][j]<<" ";
+    	}
+    	cout<<endl;
+    }*/
+    test.randomZ(q, T, 1);
     // test.display();
+
+    //test.crossover();
+    //test.display();
     test.crossover();
     test.display();
+
 	// parameter();
 
 
