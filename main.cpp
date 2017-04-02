@@ -9,6 +9,25 @@
 
 using namespace std;
 
+class FLSC {
+
+private:
+
+    int parkNum;
+    int* parent_pool[][];
+
+
+public:
+
+
+    FLSC();
+
+    void original_gene(parkNum);
+
+
+
+};
+
 
 
 void original_gene(int** parent_pool, int park_num){
