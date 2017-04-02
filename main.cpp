@@ -328,7 +328,6 @@ int main(int argc,char* argv[]) {
     test.crossover();
     test.display();
 	// parameter();
-    //
 
 
 	return 0;
