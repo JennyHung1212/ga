@@ -52,7 +52,7 @@ void FLSC:: shuffle (int* x){
     time_t xx;
     srand((unsigned)time(NULL));
     
-    for(int i=0;i<25;i++)
+    for(int i=0;i<poolLength;i++)
     {
         int n1=rand()%25;
         int n2=rand()%25;
