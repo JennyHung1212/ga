@@ -6,9 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "readFile.h"
-
 using namespace std;
-
 
 
 class FLSC {
@@ -29,10 +27,11 @@ public:
     FLSC(int man, int park, int facility);
     void original_gene(int** parent_pool, int parkNum);
     void shuffle (int* x);
+    void crossover (int** parent_pool);
 
 };
 
-void FLSC:: original_gene(int** parent_pool, int park_num){
+void FLSC :: original_gene(int** parent_pool, int park_num){
     srand(unsigned(time(NULL)));
     for(int i=0; i<poolLength; i++){
         for(int j=0; j< park_num; j++){
@@ -47,7 +46,7 @@ void FLSC:: original_gene(int** parent_pool, int park_num){
     }
 }
 
-void FLSC:: shuffle (int* x){
+void FLSC :: shuffle (int* x){
 
     time_t xx;
     srand((unsigned)time(NULL));
@@ -62,6 +61,61 @@ void FLSC:: shuffle (int* x){
     }
 
 }
+
+void FLSC :: crossover (int** crossover){
+
+    int randomIndex [poolLength] = {0};
+
+    for (int i = 0; i < poolLength ; i++)
+    {
+        randomIndex[i]=i;
+    }
+
+    for (int i = 0; i < 4 ; i++)
+    {
+        shuffle(randomIndex);
+
+        for (int j = 0; j < parkNum/2 ; j++)
+        {
+            if (i==0)
+            {
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+poolLength][j]=parent_pool[randomIndex[k]][j]
+                }
+            }
+
+            if (i==1)
+            {
+
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)]
+                }    
+            }
+
+            if (i==2)
+            {
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+2*poolLength][j]=parent_pool[randomIndex[k]][j]
+                }
+            }
+
+            else
+            {
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+2*poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)]
+                }
+
+            }
+        }
+    }
+
+}
+
+
 
 
 
