@@ -188,7 +188,7 @@ public:
     void shuffle (int* x);
     void crossover ();
     void randomZ(int** q, int** S);
-    void display (){
+    void display ();
 
     double fitness();
 
