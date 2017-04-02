@@ -188,20 +188,9 @@ public:
     void shuffle (int* x);
     void crossover ();
     void randomZ(int** q, int** S);
-    void display (){
+    void display ();
 
-        cout<<"Crossover~~~~~~~~\n";
-        for (int i = 0; i < 75; i++)
-        {
-            for (int j = 0; j < parkNum; j++)
-            {
-                cout<<parent_pool[i][j]<<" ";
-            }
-            cout<<endl;
-        }
-
-
-    };
+    double fitness();
 
 };
 
@@ -339,6 +328,7 @@ void FLSC :: crossover (){
 
 }
 
+<<<<<<< HEAD
 void FLSC :: randomZ(int** q, int** S){
 	int denominator = 0;
 	for(int i = 0; i < PARK; i++){
@@ -346,8 +336,29 @@ void FLSC :: randomZ(int** q, int** S){
 			
 		}
 	}
+=======
+void FLSC :: display(){
+
+    cout<<"Crossover~~~~~~~~\n";
+    for (int i = 0; i < 75; i++)
+    {
+        for (int j = 0; j < parkNum; j++)
+        {
+            cout<<parent_pool[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+>>>>>>> 49121fd5fdb42c630f9a4f6b9a76d0fd969804df
 }
 
+double FLSC :: fitness(){
+
+    
+
+
+    
+}
 
 
 int main(int argc,char* argv[]) {
