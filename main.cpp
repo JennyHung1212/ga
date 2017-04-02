@@ -25,7 +25,7 @@ public:
 
     FLSC();
     FLSC(int man, int park, int facility);
-    void original_gene(int** parent_pool, int parkNum);
+    void original_gene(int** parent_pool, int parkNum, int** SS);
     void shuffle (int* x);
     void crossover (int** parent_pool);
 
@@ -40,17 +40,26 @@ FLSC :: FLSC (int man, int park, int facility){
     parent_pool = new int *[75];
 
     for (int i = 0; i<75; i++) {
-        parent_pool[i] = new bool[parkNum];
+        parent_pool[i] = new int[parkNum];
     }
 
 }
 
 
-void FLSC :: original_gene(int** parent_pool, int park_num){
+void FLSC :: original_gene(int** S){
+	int scale = 0;
     srand(unsigned(time(NULL)));
     for(int i=0; i<poolLength; i++){
         for(int j=0; j< park_num; j++){
-            parent_pool[i][j] = rand()%6;
+        	while(true){
+	        	scale = rand()%6;
+	        	if(S[j][scale] == 1){
+	        		parent_pool[i][j] = scale;
+	        		break;
+	        	}        		
+        	}
+
+            
         }
     }
     for(int i=0; i<poolLength; i++){
@@ -79,7 +88,7 @@ void FLSC :: shuffle (int* x){
 
 void FLSC :: crossover (int** crossover){
 
-    int randomIndex [poolLength] = {0};
+    int randomIndex [poolLength];
 
     for (int i = 0; i < poolLength ; i++)
     {
@@ -96,7 +105,7 @@ void FLSC :: crossover (int** crossover){
             {
                 for (int k = 0; k < poolLength; k++)
                 {
-                    parent_pool[k+poolLength][j]=parent_pool[randomIndex[k]][j]
+                    parent_pool[k+poolLength][j]=parent_pool[randomIndex[k]][j];
                 }
             }
 
@@ -105,7 +114,7 @@ void FLSC :: crossover (int** crossover){
 
                 for (int k = 0; k < poolLength; k++)
                 {
-                    parent_pool[k+poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)]
+                    parent_pool[k+poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
                 }    
             }
 
@@ -113,7 +122,7 @@ void FLSC :: crossover (int** crossover){
             {
                 for (int k = 0; k < poolLength; k++)
                 {
-                    parent_pool[k+2*poolLength][j]=parent_pool[randomIndex[k]][j]
+                    parent_pool[k+2*poolLength][j]=parent_pool[randomIndex[k]][j];
                 }
             }
 
@@ -121,7 +130,7 @@ void FLSC :: crossover (int** crossover){
             {
                 for (int k = 0; k < poolLength; k++)
                 {
-                    parent_pool[k+2*poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)]
+                    parent_pool[k+2*poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
                 }
 
             }
@@ -139,9 +148,14 @@ int main(int argc,char* argv[]) {
 	MAN = atoi(argv[1]);
 	PARK = atoi(argv[2]);
 	FACILITY = atoi(argv[3]);
-	
+	int** parent_pool = new int*[75];
+	for(int i =0; i<75; i++){
+		parent_pool[i] = new int[PARK];
+	}
 	
 
 	parameter();
+	FLSC GA(MAN, PARK, FACILITY);
+	GA.original_gene(parent_pool, PARK, S);
 	return 0;
 }
