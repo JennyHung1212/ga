@@ -40,11 +40,12 @@ void original_gene(int** parent_pool, int park_num){
 
 int main(){
     int park_num;
+    cout<<"Enter park number:"<<endl;
     cin>>park_num;
-    int** parent_pool= new *int[park_num];
-    for(int i=0; i<10; i++){
-        parent_pool[i] = {0};
+    int** parent_pool= new int* [25];
+    for(int i=0; i<25; i++){
+        parent_pool[i] = new int[park_num];
     }
-    original_gene();
+    original_gene(parent_pool, park_num);
 }
 
