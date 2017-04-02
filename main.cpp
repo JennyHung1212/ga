@@ -176,6 +176,7 @@ private:
     int facilityNum;
     int poolLength;
     int** parent_pool;
+    int** facility_floor_area;
 
 
 public:
@@ -184,9 +185,10 @@ public:
     FLSC();
     FLSC(int man, int park, int facility);
     void original_gene(int** S);
-    void shuffle(int* x);
-    void crossover();
-    void display();
+    void shuffle (int* x);
+    void crossover ();
+    void randomZ(int** q, int** S);
+    void display (){
 
     double fitness();
 
@@ -213,6 +215,16 @@ FLSC :: FLSC (int man, int park, int facility){
         }
     }
 
+    facility_floor_area = new int *[parkNum];
+    for (int i = 0; i< parkNum; i++) {
+    	facility_floor_area[i] = new int[facilityNum];
+    }
+    for (int i = 0; i< parkNum; i++) {
+    	for (int j = 0; j < facilityNum; j++){
+    		facility_floor_area[i][j]=0;
+    	}
+    }
+
 
 }
 
@@ -234,6 +246,7 @@ void FLSC :: original_gene(int** S){
         	}          
         }
     }
+
     for(int i=0; i<poolLength; i++){
         for(int j=0; j<parkNum; j++){
             cout<<parent_pool[i][j]<<" ";
