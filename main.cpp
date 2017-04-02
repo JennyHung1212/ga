@@ -174,7 +174,7 @@ private:
     int manNum;
     int parkNum;
     int facilityNum;
-    int poolLength;
+    //int poolLength;
     int** parent_pool;
     int** facility_floor_area;
 
@@ -196,6 +196,10 @@ public:
 
 FLSC :: FLSC (int man, int park, int facility){
 
+<<<<<<< HEAD
+=======
+    //poolLength=20;
+>>>>>>> cd3d55fa4101f6666295c8b35f3d3bf775f09826
     manNum = man;
     parkNum = park;
     facilityNum = facility;
@@ -328,6 +332,17 @@ void FLSC :: crossover (){
 }
 
 
+<<<<<<< HEAD
+=======
+void FLSC :: randomZ(int** q, int** S){
+	int denominator = 0;
+	for(int i = 0; i < PARK; i++){
+		for(int j = 0; j < FACILITY; j++){
+			
+		}
+	}
+}
+>>>>>>> cd3d55fa4101f6666295c8b35f3d3bf775f09826
 
 void FLSC :: display(){
 
