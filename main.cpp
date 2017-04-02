@@ -166,7 +166,7 @@ void parameter() {
 }
 
 
-const int poolLength =25;
+const int poolLength =20;
 class FLSC {
 
 private:
@@ -196,7 +196,6 @@ public:
 
 FLSC :: FLSC (int man, int park, int facility){
 
-    poolLength=25;
     manNum = man;
     parkNum = park;
     facilityNum = facility;
@@ -328,6 +327,8 @@ void FLSC :: crossover (){
 
 }
 
+
+
 void FLSC :: display(){
 
     cout<<"Crossover~~~~~~~~\n";
@@ -360,7 +361,7 @@ int main(int argc,char* argv[]) {
     parameter();
     test.original_gene(S);
     // test.display();
-    test.crossover();
+    //test.crossover();
     test.display();
 	// parameter();
 
