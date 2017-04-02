@@ -166,7 +166,7 @@ void parameter() {
 }
 
 
-const int poolLength =25;
+const int poolLength =20;
 class FLSC {
 
 private:
@@ -174,7 +174,7 @@ private:
     int manNum;
     int parkNum;
     int facilityNum;
-    int poolLength;
+    //int poolLength;
     int** parent_pool;
     int** facility_floor_area;
 
@@ -196,7 +196,7 @@ public:
 
 FLSC :: FLSC (int man, int park, int facility){
 
-    poolLength=25;
+    //poolLength=20;
     manNum = man;
     parkNum = park;
     facilityNum = facility;
@@ -328,7 +328,7 @@ void FLSC :: crossover (){
 
 }
 
-<<<<<<< HEAD
+
 void FLSC :: randomZ(int** q, int** S){
 	int denominator = 0;
 	for(int i = 0; i < PARK; i++){
@@ -336,7 +336,8 @@ void FLSC :: randomZ(int** q, int** S){
 			
 		}
 	}
-=======
+}
+
 void FLSC :: display(){
 
     cout<<"Crossover~~~~~~~~\n";
@@ -349,7 +350,6 @@ void FLSC :: display(){
         cout<<endl;
     }
 
->>>>>>> 49121fd5fdb42c630f9a4f6b9a76d0fd969804df
 }
 
 double FLSC :: fitness(){
@@ -370,7 +370,7 @@ int main(int argc,char* argv[]) {
     parameter();
     test.original_gene(S);
     // test.display();
-    test.crossover();
+    //test.crossover();
     test.display();
 	// parameter();
 
