@@ -37,3 +37,7 @@ int main(){
     original_gene(parent_pool, park_num);
 }
 //s
+
+
+
+//hiiiiii
