@@ -9,20 +9,7 @@
 
 using namespace std;
 
-/*int FILE_pos = 1;
-int MAN;
-int PARK;
-int FACILITY;
-int SCALE = 5;
 
-double*** p;
-int** S;
-int** T;
-int** f;
-int** q;
-int* c;
-double* k;
-int* d;
 
 int* file1Input(string filePath,int len) {
 	fstream file;
@@ -153,49 +140,4 @@ void parameter() {
 	k = file1Input_double("ga/k_"+to_string(FILE_pos)+".csv",FACILITY);
 	d = file1Input("ga/d_"+to_string(FILE_pos)+".csv",MAN);
 	p = file3Input("ga/p_"+to_string(FILE_pos)+".csv",MAN,PARK,FACILITY);
-}*/
-
-class FLSC {
-
-private:
-
-    int parkNum;
-    int* parent_pool[][];
-
-
-public:
-
-
-    FLSC();
-    void original_gene(parkNum);
-
-
-
-};
-
-void FLSC:: original_gene(int** parent_pool, int park_num){
-    srand(unsigned(time(NULL)));
-    for(int i=0; i<25; i++){
-        for(int j=0; j< park_num; j++){
-            parent_pool[i][j] = rand()%6;
-        }
-    }
-    for(int i=0; i<25; i++){
-        for(int j=0; j<park_num; j++){
-            cout<<parent_pool[i][j]<<" ";
-        }
-        cout<<endl;
-    }
-}
-
-
-
-
-int main(int argc,char* argv[]) {
-	MAN = atoi(argv[1]);
-	PARK = atoi(argv[2]);
-	FACILITY = atoi(argv[3]);
-	
-	parameter();
-	return 0;
 }
