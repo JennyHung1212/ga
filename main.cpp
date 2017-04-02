@@ -185,12 +185,17 @@ public:
     FLSC(int man, int park, int facility);
     void original_gene();
     void shuffle (int* x);
-    void crossover (int** parent_pool);
+    void crossover ();
     void display (){
 
+        cout<<"Crossover~~~~~~~~\n";
         for (int i = 0; i < 75; i++)
         {
-            cout<<parent_pool[i]<<","<<endl;
+            for (int j = 0; j < parkNum; j++)
+            {
+                cout<<parent_pool[i][j]<<" ";
+            }
+            cout<<endl;
         }
 
 
@@ -210,6 +215,15 @@ FLSC :: FLSC (int man, int park, int facility){
     for (int i = 0; i<75; i++) {
         parent_pool[i] = new int[parkNum];
     }
+
+     for (int i = 0; i < 75; i++)
+    {
+        for (int j = 0; j < parkNum; j++)
+        {
+            parent_pool[i][j]=0;
+        }
+    }
+
 
 }
 
@@ -245,7 +259,7 @@ void FLSC :: shuffle (int* x){
 
 }
 
-void FLSC :: crossover (int** crossover){
+void FLSC :: crossover (){
 
     int randomIndex [poolLength];
 
@@ -316,8 +330,9 @@ int main(int argc,char* argv[]) {
 	
     FLSC test(MAN,PARK,FACILITY);
     test.original_gene();
+    // test.display();
+    test.crossover();
     test.display();
-
 	// parameter();
     //
 
