@@ -7,144 +7,6 @@
 #include <time.h>
 using namespace std;
 
-
-const int poolLength =25;
-class FLSC {
-
-private:
-
-    int manNum;
-    int parkNum;
-    int facilityNum;
-    int poolLength;
-    int** parent_pool;
-
-
-public:
-
-
-    FLSC();
-    FLSC(int man, int park, int facility);
-    void original_gene();
-    void shuffle (int* x);
-    void crossover (int** parent_pool);
-    void display (){
-
-        for (int i = 0; i < 75; i++)
-        {
-            cout<<parent_pool[i]<<","<<endl;
-        }
-
-
-    };
-
-};
-
-FLSC :: FLSC (int man, int park, int facility){
-
-    poolLength=25;
-    manNum = man;
-    parkNum = park;
-    facilityNum = facility;
-
-    parent_pool = new int *[75];
-
-    for (int i = 0; i<75; i++) {
-        parent_pool[i] = new int[parkNum];
-    }
-
-}
-
-
-void FLSC :: original_gene(){
-    srand(unsigned(time(NULL)));
-    for(int i=0; i<poolLength; i++){
-        for(int j=0; j< parkNum; j++){
-            parent_pool[i][j] = rand()%6;
-        }
-    }
-    for(int i=0; i<poolLength; i++){
-        for(int j=0; j<parkNum; j++){
-            cout<<parent_pool[i][j]<<" ";
-        }
-        cout<<endl;
-    }
-}
-
-void FLSC :: shuffle (int* x){
-
-    time_t xx;
-    srand((unsigned)time(NULL));
-    
-    for(int i=0;i<poolLength;i++)
-    {
-        int n1=rand()%25;
-        int n2=rand()%25;
-        int temp=x[n1];
-        x[n1]=x[n2];
-        x[n2]=temp;
-    }
-
-}
-
-void FLSC :: crossover (int** crossover){
-
-    int randomIndex [poolLength];
-
-    for (int i = 0; i < poolLength; i++)
-    {
-        randomIndex [i] = 0;
-    }
-
-    for (int i = 0; i < poolLength ; i++)
-    {
-        randomIndex[i]=i;
-    }
-
-    for (int i = 0; i < 4 ; i++)
-    {
-        shuffle(randomIndex);
-
-        for (int j = 0; j < parkNum/2 ; j++)
-        {
-            if (i==0)
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+poolLength][j]=parent_pool[randomIndex[k]][j];
-                }
-            }
-
-            if (i==1)
-            {
-
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
-                }    
-            }
-
-            if (i==2)
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+2*poolLength][j]=parent_pool[randomIndex[k]][j];
-                }
-            }
-            else
-            {
-                for (int k = 0; k < poolLength; k++)
-                {
-                    parent_pool[k+2*poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
-                }
-
-            }
-        }
-    }
-
-}
-
-
 /* global variable*/
 int FILE_pos = 1;
 int MAN;
@@ -302,6 +164,146 @@ void parameter() {
     d = file1Input("ga/d_"+to_string(FILE_pos)+".csv",MAN);
     p = file3Input("ga/p_"+to_string(FILE_pos)+".csv",MAN,PARK,FACILITY);
 }
+
+
+const int poolLength =25;
+class FLSC {
+
+private:
+
+    int manNum;
+    int parkNum;
+    int facilityNum;
+    int poolLength;
+    int** parent_pool;
+
+
+public:
+
+
+    FLSC();
+    FLSC(int man, int park, int facility);
+    void original_gene();
+    void shuffle (int* x);
+    void crossover (int** parent_pool);
+    void display (){
+
+        for (int i = 0; i < 75; i++)
+        {
+            cout<<parent_pool[i]<<","<<endl;
+        }
+
+
+    };
+
+};
+
+FLSC :: FLSC (int man, int park, int facility){
+
+    poolLength=25;
+    manNum = man;
+    parkNum = park;
+    facilityNum = facility;
+
+    parent_pool = new int *[75];
+
+    for (int i = 0; i<75; i++) {
+        parent_pool[i] = new int[parkNum];
+    }
+
+}
+
+
+void FLSC :: original_gene(){
+    srand(unsigned(time(NULL)));
+    for(int i=0; i<poolLength; i++){
+        for(int j=0; j< parkNum; j++){
+            parent_pool[i][j] = rand()%6;
+        }
+    }
+    for(int i=0; i<poolLength; i++){
+        for(int j=0; j<parkNum; j++){
+            cout<<parent_pool[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+void FLSC :: shuffle (int* x){
+
+    time_t xx;
+    srand((unsigned)time(NULL));
+    
+    for(int i=0;i<poolLength;i++)
+    {
+        int n1=rand()%25;
+        int n2=rand()%25;
+        int temp=x[n1];
+        x[n1]=x[n2];
+        x[n2]=temp;
+    }
+
+}
+
+void FLSC :: crossover (int** crossover){
+
+    int randomIndex [poolLength];
+
+    for (int i = 0; i < poolLength; i++)
+    {
+        randomIndex [i] = 0;
+    }
+
+    for (int i = 0; i < poolLength ; i++)
+    {
+        randomIndex[i]=i;
+    }
+
+    for (int i = 0; i < 4 ; i++)
+    {
+        shuffle(randomIndex);
+
+        for (int j = 0; j < parkNum/2 ; j++)
+        {
+            if (i==0)
+            {
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+poolLength][j]=parent_pool[randomIndex[k]][j];
+                }
+            }
+
+            if (i==1)
+            {
+
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
+                }    
+            }
+
+            if (i==2)
+            {
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+2*poolLength][j]=parent_pool[randomIndex[k]][j];
+                }
+            }
+            else
+            {
+                for (int k = 0; k < poolLength; k++)
+                {
+                    parent_pool[k+2*poolLength][j+(parkNum/2)]=parent_pool[randomIndex[k]][j+(parkNum/2)];
+                }
+
+            }
+        }
+    }
+
+}
+
+
+
 
 
 
