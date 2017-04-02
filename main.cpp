@@ -193,6 +193,8 @@ public:
 
     double fitness();
 
+    void mutation();
+
 };
 
 FLSC :: FLSC (int man, int park, int facility){
@@ -227,7 +229,6 @@ FLSC :: FLSC (int man, int park, int facility){
     		facility_floor_area[i][j]=0;
     	}
     }
-
 
 }
 
@@ -348,6 +349,37 @@ double FLSC :: fitness(){
 
     
 }
+
+
+
+void FLSC :: mutation(){
+
+    const int mutationPosibility = 3;
+
+    for (int i = 0; i < poolLength; i++)
+    {
+        for (int j = 0; j < parkNum; j++)
+        {
+            int r = rand()%100;
+
+            if (r<mutationPosibility)
+            {
+
+               int muNum = rand()%6;
+               while (muNum==kid_pool[i][j])
+               {
+                   muNum=rand()%6;
+                   kid_pool[i][j]=muNum;
+               }
+
+            }
+        }
+    }
+}
+
+
+
+
 
 
 int main(int argc,char* argv[]) {
