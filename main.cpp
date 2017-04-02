@@ -158,33 +158,52 @@ class FLSC {
 
 private:
 
+    int manNum;
     int parkNum;
-    int* parent_pool[][];
+    int facilityNum;
+    const int poolLength = 25;
+    int** parent_pool;
 
 
 public:
 
 
     FLSC();
-    void original_gene(parkNum);
-
-
+    FLSC(int man, int park, int facility);
+    void original_gene(int** parent_pool, int parkNum);
+    void shuffle (int* x);
 
 };
 
 void FLSC:: original_gene(int** parent_pool, int park_num){
     srand(unsigned(time(NULL)));
-    for(int i=0; i<25; i++){
+    for(int i=0; i<poolLength; i++){
         for(int j=0; j< park_num; j++){
             parent_pool[i][j] = rand()%6;
         }
     }
-    for(int i=0; i<25; i++){
+    for(int i=0; i<poolLength; i++){
         for(int j=0; j<park_num; j++){
             cout<<parent_pool[i][j]<<" ";
         }
         cout<<endl;
     }
+}
+
+void FLSC:: shuffle (int* x){
+
+    time_t xx;
+    srand((unsigned)time(NULL));
+    
+    for(int i=0;i<25;i++)
+    {
+        int n1=rand()%25;
+        int n2=rand()%25;
+        int temp=x[n1];
+        x[n1]=x[n2];
+        x[n2]=temp;
+    }
+
 }
 
 
