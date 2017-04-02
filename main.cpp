@@ -184,22 +184,11 @@ public:
     FLSC();
     FLSC(int man, int park, int facility);
     void original_gene(int** S);
-    void shuffle (int* x);
-    void crossover ();
-    void display (){
+    void shuffle(int* x);
+    void crossover();
+    void display();
 
-        cout<<"Crossover~~~~~~~~\n";
-        for (int i = 0; i < 75; i++)
-        {
-            for (int j = 0; j < parkNum; j++)
-            {
-                cout<<parent_pool[i][j]<<" ";
-            }
-            cout<<endl;
-        }
-
-
-    };
+    double fitness();
 
 };
 
@@ -324,6 +313,28 @@ void FLSC :: crossover (){
         }
     }
 
+}
+
+void FLSC :: display(){
+
+    cout<<"Crossover~~~~~~~~\n";
+    for (int i = 0; i < 75; i++)
+    {
+        for (int j = 0; j < parkNum; j++)
+        {
+            cout<<parent_pool[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+}
+
+double FLSC :: fitness(){
+
+    
+
+
+    
 }
 
 
