@@ -340,7 +340,12 @@ void FLSC :: crossover (){
 }
 
 void FLSC :: randomZ(int** q, int** S){
-
+	int denominator = 0;
+	for(int i = 0; i < PARK; i++){
+		for(int j = 0; j < FACILITY; j++){
+			
+		}
+	}
 }
 
 
