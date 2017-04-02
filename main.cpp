@@ -364,7 +364,6 @@ void FLSC :: mutation(){
 
             if (r<mutationPosibility)
             {
-
                int muNum = rand()%6;
                while (muNum==kid_pool[i][j])
                {
