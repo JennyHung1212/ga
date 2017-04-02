@@ -319,18 +319,15 @@ void FLSC :: crossover (){
         kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
     }
 
+}
 
-<<<<<<< HEAD
 int** FLSC :: randomZ(int** q, int** T, int num){
 	int denominator = 0;	
 	int is_zero = 0;
 	time_t xx;
 	srand((unsigned)time(NULL));
-=======
-}
-void FLSC :: randomZ(int** q, int** S){
-	int denominator = 0;
->>>>>>> 1248877f1004b569f8d6fd98679337e1b3b8439f
+
+
 	for(int i = 0; i < PARK; i++){
 
 		if(parent_pool[num][i] != 0){
@@ -453,13 +450,12 @@ int main(int argc,char* argv[]) {
     }*/
     test.randomZ(q, T, 1);
     // test.display();
-<<<<<<< HEAD
+
     //test.crossover();
     //test.display();
-=======
     test.crossover();
     test.display();
->>>>>>> 1248877f1004b569f8d6fd98679337e1b3b8439f
+
 	// parameter();
 
 
