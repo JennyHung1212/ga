@@ -317,12 +317,6 @@ void FLSC :: crossover (){
 }
 
 
-
-
-
-
-
-
 int main(int argc,char* argv[]) {
 	MAN = atoi(argv[1]);
 	PARK = atoi(argv[2]);
