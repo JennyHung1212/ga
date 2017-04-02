@@ -183,7 +183,7 @@ public:
 
     FLSC();
     FLSC(int man, int park, int facility);
-    void original_gene();
+    void original_gene(int** S);
     void shuffle (int* x);
     void crossover ();
     void display (){
@@ -228,11 +228,21 @@ FLSC :: FLSC (int man, int park, int facility){
 }
 
 
-void FLSC :: original_gene(){
+void FLSC :: original_gene(int** S){
+	int scale = 0;
     srand(unsigned(time(NULL)));
     for(int i=0; i<poolLength; i++){
         for(int j=0; j< parkNum; j++){
-            parent_pool[i][j] = rand()%6;
+        	while(1){
+		    	scale = rand()%6;
+		    	if(scale != 0 && S[j][scale-1] == 1){
+		    		parent_pool[i][j] = scale;
+		    		break;
+		    	}else if(scale == 0){
+		    		parent_pool[i][j] = 0;
+		    		break;
+		    	}        		
+        	}          
         }
     }
     for(int i=0; i<poolLength; i++){
@@ -329,7 +339,8 @@ int main(int argc,char* argv[]) {
 	FACILITY = atoi(argv[3]);
 	
     FLSC test(MAN,PARK,FACILITY);
-    test.original_gene();
+    parameter();
+    test.original_gene(S);
     // test.display();
     test.crossover();
     test.display();
