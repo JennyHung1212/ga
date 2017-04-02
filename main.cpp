@@ -15,19 +15,7 @@ void original_gene(int** parent_pool, int park_num){
     srand(unsigned(time(NULL)));
     for(int i=0; i<25; i++){
         for(int j=0; j< park_num; j++){
-            if(rand()%6 == 0){
-                parent_pool[i][j] = 0;
-            }else if(rand()%6 == 1){
-                parent_pool[i][j] = 1;
-            }else if(rand()%6 == 2){
-                parent_pool[i][j] = 2;
-            }else if(rand()%6 == 3){
-                parent_pool[i][j] = 3;
-            }else if(rand()%6 == 4){
-                parent_pool[i][j] = 4;
-            }else if(rand()%6 == 5){
-                parent_pool[i][j] = 5;
-            }
+            parent_pool[i][j] = rand()%6;
         }
     }
     for(int i=0; i<25; i++){
