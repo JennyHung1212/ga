@@ -5,10 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <limits>
 using namespace std;
 
-/* global variable*/
+//global variable
+
 int FILE_pos = 1;
 int MAN;
 int PARK;
@@ -24,6 +24,9 @@ int** q;
 int* c;
 double* k;
 int* d;
+
+//-------------------------------------------------------------------------------------------------------
+//input function
 
 int* file1Input(std::string filePath,int len);
 double* file1Input_double(std::string filePath,int len);
@@ -165,9 +168,11 @@ void parameter() {
     d = file1Input("ga/d_"+to_string(FILE_pos)+".csv",MAN);
     p = file3Input("ga/p_"+to_string(FILE_pos)+".csv",MAN,PARK,FACILITY);
 }
-
+//------------------------------------------------------------------------------------
+//class FLSC
 
 const int poolLength =20;
+
 class FLSC {
 
 private:
@@ -175,26 +180,23 @@ private:
     int manNum;
     int parkNum;
     int facilityNum;
+    int totalCost;
     int** parent_pool;
     int** facility_floor_area;
-
-
-    int** kid_pool;
+	int** kid_pool;
 
 public:
-
 
     FLSC();
     FLSC(int man, int park, int facility);
     void original_gene(int** S);
     void shuffle (int* x);
     void crossover ();
-    int** randomZ(int** q, int** T, int num);
+    int** randomZ(int** q, int** T, int num_of_chromosome);
     void display ();
-
     double fitness();
-
     void mutation();
+    int cost(int**f, int*c, int num_of_chromosome);
 
 };
 
@@ -203,6 +205,7 @@ FLSC :: FLSC (int man, int park, int facility){
     manNum = man;
     parkNum = park;
     facilityNum = facility;
+    totalCost = 0;
 
     parent_pool = new int *[75];
     kid_pool = new int* [75];
@@ -211,17 +214,15 @@ FLSC :: FLSC (int man, int park, int facility){
         parent_pool[i] = new int[parkNum];
         kid_pool[i] = new int[parkNum];
     }
-
-     for (int i = 0; i < 75; i++)
-    {
-        for (int j = 0; j < parkNum; j++)
-        {
+    for (int i = 0; i < 75; i++) {
+        for (int j = 0; j < parkNum; j++){
             parent_pool[i][j]=0;
             kid_pool[i][j]=0;
         }
     }
 
     facility_floor_area = new int *[parkNum];
+
     for (int i = 0; i< parkNum; i++) {
     	facility_floor_area[i] = new int[facilityNum];
     }
@@ -230,7 +231,6 @@ FLSC :: FLSC (int man, int park, int facility){
     		facility_floor_area[i][j]=0;
     	}
     }
-
 }
 
 
@@ -251,13 +251,6 @@ void FLSC :: original_gene(int** S){
         	}          
         }
     }
-
-    for(int i=0; i<poolLength; i++){
-        for(int j=0; j<parkNum; j++){
-            cout<<parent_pool[i][j]<<" ";
-        }
-        cout<<endl;
-    }
 }
 
 void FLSC :: shuffle (int* x){
@@ -265,89 +258,72 @@ void FLSC :: shuffle (int* x){
     time_t xx;
     srand((unsigned)time(NULL));
     
-    for(int i=0;i<poolLength;i++)
-    {
+    for(int i=0;i<poolLength;i++){
         int n1=rand()%25;
         int n2=rand()%25;
         int temp=x[n1];
         x[n1]=x[n2];
         x[n2]=temp;
     }
-
 }
 
 void FLSC :: crossover (){
 
-
-
-    for (int i = 0; i < poolLength/2; i++)
-    {
-        for (int j = 0; j < parkNum/2; j++)
-        {
+	for (int i = 0; i < poolLength/2; i++){
+        for (int j = 0; j < parkNum/2; j++){
             kid_pool[2*i][j] = parent_pool[2*i][j];
         }
-
-        for (int j = parkNum/2; j < parkNum; j++)
-        {
+		for (int j = parkNum/2; j < parkNum; j++){
             kid_pool[2*i][j] = parent_pool[2*i+1][j];
         }
-
     }
 
 
-    for (int i = 1; i < poolLength/2; i++)
-    {
-        for (int j = 0; j < poolLength/2; j++)
-        {
+    for (int i = 1; i < poolLength/2; i++){
+        for (int j = 0; j < poolLength/2; j++){
             kid_pool[2*i-1][j] = parent_pool[2*i-1][j];
         }
 
-        for (int j = parkNum/2; j < parkNum; j++)
-        {
+        for (int j = parkNum/2; j < parkNum; j++){
             kid_pool[2*i-1][j] = parent_pool[2*i-2][j];
         }
         
     }
 
-    for (int i = 0; i < parkNum; i++)
-    {       
+    for (int i = 0; i < parkNum; i++){       
         kid_pool[poolLength-1][i] = parent_pool[poolLength-1][i];
     }
 
-    for (int i = parkNum/2; i < parkNum; i++)
-    {       
+    for (int i = parkNum/2; i < parkNum; i++){       
         kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
     }
 
 }
 
-int** FLSC :: randomZ(int** q, int** T, int num){
-	int denominator = 0;	
+int** FLSC :: randomZ(int** q, int** T, int num_of_chromosome){
+
+	int js_area = 0;	
 	int is_zero = 0;
 	time_t xx;
 	srand((unsigned)time(NULL));
 
-
 	for(int i = 0; i < PARK; i++){
 
-		if(parent_pool[num][i] != 0){
-			denominator = q[i][parent_pool[num][i]-1];
+		if(parent_pool[num_of_chromosome][i] != 0){
+			js_area = q[i][parent_pool[num_of_chromosome][i]-1];
 			is_zero = 0;
 		}else{
 			is_zero = 1;
-			denominator = 0;
+			js_area = 0;
 		}
-		
-		//cout<<"DENOMINATOR: "<<denominator<<endl;
-		//cout<<"IS_ZERO: "<<is_zero<<endl;
 
 		while(1){
 					
 			for(int j = 0; j < FACILITY; j++){
-				if(denominator != 0 && T[i][j] != 0){
+				if(js_area != 0 && T[i][j] != 0){
 					if(is_zero == 0){
 						
-						facility_floor_area[i][j] = rand()%denominator;
+						facility_floor_area[i][j] = rand() % js_area;
 					}else{
 						facility_floor_area[i][j] = 0;
 					}
@@ -364,7 +340,7 @@ int** FLSC :: randomZ(int** q, int** T, int num){
 					sum = sum + facility_floor_area[i][j];
 				}
 			}
-			if(sum < denominator){
+			if(sum < js_area){
 				break;
 			}
 			
@@ -372,27 +348,28 @@ int** FLSC :: randomZ(int** q, int** T, int num){
 
 	}
 	return facility_floor_area;
-	/*for(int i = 0; i < PARK; i++){
-		for(int j = 0; j < FACILITY; j++){
-			cout<<facility_floor_area[i][j]<<" ";
-		}
-		cout<<endl;
-	}*/
+
 }
 
-void FLSC :: display(){
 
-    cout<<"Crossover~~~~~~~~\n";
-    for (int i = 0; i < 75; i++)
-    {
-        for (int j = 0; j < parkNum; j++)
-        {
-            //cout<<parent_pool[i][j]<<" ";
-            cout<<kid_pool[i][j]<<" ";
-        }
-        cout<<endl;
-    }
+int FLSC :: cost(int**f, int*c, int num_of_chromosome){
+	int f_cost = 0;
+	int c_cost = 0;
 
+	for(int i = 0; i < PARK; i++){
+		if(parent_pool[num_of_chromosome][i] != 0){
+			f_cost += f[i][parent_pool[num_of_chromosome][i]-1];
+		}
+
+	}
+	for(int i = 0; i < PARK; i++){
+		for(int j = 0; j < FACILITY; j++){
+			c_cost += c[j] * facility_floor_area[i][j];
+		}
+	}
+
+	totalCost = f_cost + c_cost;
+	return totalCost;
 }
 
 double FLSC :: fitness(){
@@ -401,36 +378,61 @@ double FLSC :: fitness(){
     
 }
 
-
-
 void FLSC :: mutation(){
 
     const int mutationPosibility = 3;
 
-    for (int i = 0; i < poolLength; i++)
-    {
-        for (int j = 0; j < parkNum; j++)
-        {
+    for (int i = 0; i < poolLength; i++){
+        for (int j = 0; j < parkNum; j++){
             int r = rand()%100;
 
-            if (r<mutationPosibility)
-            {
+            if (r<mutationPosibility){
                int muNum = rand()%6;
-               while (muNum==kid_pool[i][j])
-               {
+               while (muNum==kid_pool[i][j]){
                    muNum=rand()%6;
                    kid_pool[i][j]=muNum;
                }
-
             }
         }
     }
 }
 
+void FLSC :: display(){
+
+	cout<<"\noriginal_gene~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+    for(int i=0; i<poolLength; i++){
+        for(int j=0; j<parkNum; j++){
+            cout<<parent_pool[i][j]<<" ";
+        }
+        cout<<endl;
+    }	
+
+	cout<<"\nrzndomZ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+	for(int i = 0; i < PARK; i++){
+		for(int j = 0; j < FACILITY; j++){
+			cout<<facility_floor_area[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+
+    cout<<"\ncrossover~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+    for (int i = 0; i < 75; i++){
+        for (int j = 0; j < parkNum; j++){
+            cout<<kid_pool[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+    cout<<"\ntotalCost~~~~~~~~~~~~~~~~\n";
+    cout<<"$"<<totalCost<<endl;
+
+    cout<<"======================================================\n";
+
+}
 
 
-
-
+//-------------------------------------------------------------------
+//main function
 
 int main(int argc,char* argv[]) {
 	MAN = atoi(argv[1]);
@@ -439,24 +441,12 @@ int main(int argc,char* argv[]) {
 	
     FLSC test(MAN,PARK,FACILITY);
     parameter();
+
     test.original_gene(S);
-
-    //cout<<"randomZ~~~~~~~"<<endl;
-    /*for(int i=0; i<PARK; i++){
-    	for(int j=0; j<5; j++){
-    		cout<<q[i][j]<<" ";
-    	}
-    	cout<<endl;
-    }*/
-    test.randomZ(q, T, 1);
-    // test.display();
-
-    //test.crossover();
-    //test.display();
+    test.randomZ(q, T, 0);
     test.crossover();
+    test.cost(f, c, 0);
     test.display();
-
-	// parameter();
 
 
 	return 0;
