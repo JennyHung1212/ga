@@ -410,7 +410,7 @@ void FLSC :: display(){
 	cout<<"\nrzndomZ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 	for(int i = 0; i < PARK; i++){
 		for(int j = 0; j < FACILITY; j++){
-			cout<<facility_floor_area[i][j]<<" ";
+			cout<<facility_floor_area[i][j]<<"\t";
 		}
 		cout<<endl;
 	}
