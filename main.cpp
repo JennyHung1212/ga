@@ -29,6 +29,9 @@ int* c;
 double* k;
 int* d;
 
+int costIteration = 50;
+
+
 //-------------------------------------------------------------------------------------------------------
 //input function
 
@@ -401,10 +404,19 @@ double FLSC :: fitness(int num_of_chromosome){
             ff_area[i][j]=0;
         }
     }
-    ff_area = randomZ(q, T, num_of_chromosome);
-    totalCost = cost(f, c, ff_area, num_of_chromosome);
 
-    
+
+    for(int i = 0; i < costIteration; i++){
+        ff_area = randomZ(q, T, num_of_chromosome);
+        while(cost(f, c, ff_area, num_of_chromosome) > totalBudget){
+            ff_area = randomZ(q, T, num_of_chromosome);
+        }
+
+
+
+
+        
+    }   
 }
 
 
