@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <utility>
+#include <vector>
+#include <queue>
 using namespace std;
 
 //global variable
@@ -195,10 +198,10 @@ public:
     void crossover ();
     int** randomZ(int** q, int** T, int num_of_chromosome);
     void display ();
-    double fitness();
+    double fitness(int num_of_chromosome);
     void mutation();
     int cost(int**f, int*c, int num_of_chromosome);
-
+    void selection();
 };
 
 FLSC :: FLSC (int man, int park, int facility){
@@ -373,10 +376,40 @@ int FLSC :: cost(int**f, int*c, int num_of_chromosome){
 	return totalCost;
 }
 
-double FLSC :: fitness(){
+double FLSC :: fitness(int num_of_chromosome){
 
 
     
+}
+
+
+
+void FLSC :: selection(){
+    vector < pair <double, int> > vector_result;
+
+    pair < double, int > result;
+
+    for(int i = 0; i<poolLength*2; i++){
+        result.first = rand()%40;
+        result.second = i;
+        vector_result.push_back(result);
+    }
+    priority_queue < pair <double, int> > select;
+
+    for(int i = 0; i < poolLength*2; i++){
+        select.push(vector_result[i]);
+    }
+
+    for(int i = 0; i < poolLength; i++){
+        parent_pool[i] = kid_pool[select.top().second];
+        select.pop(); 
+    }
+    
+    /*for(int i = 0; i < 40; i++){
+        cout<<select.top().first<<", "<<select.top().second<<endl;
+        select.pop();
+    }*/
+
 }
 
 void FLSC :: mutation(){
@@ -448,8 +481,10 @@ int main(int argc,char* argv[]) {
     test.randomZ(q, T, 0);
     test.crossover();
     test.cost(f, c, 0);
-    test.display();
 
+    test.display();
+    test.selection();
+    test.display();
 
 	return 0;
 }
