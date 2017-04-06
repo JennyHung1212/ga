@@ -16,6 +16,7 @@ int FILE_pos = 1;
 int MAN;
 int PARK;
 int FACILITY;
+int BUDGET;
 int SCALE = 5;
 
 
@@ -181,6 +182,7 @@ class FLSC {
 
 private:
 
+    int totalBudget;
     int manNum;
     int parkNum;
     int facilityNum;
@@ -192,7 +194,7 @@ private:
 public:
 
     FLSC();
-    FLSC(int man, int park, int facility);
+    FLSC(int man, int park, int facility, int budget);
     void original_gene(int** S);
     void crossover ();
     int** randomZ(int** q, int** T, int num_of_chromosome);
@@ -206,11 +208,13 @@ public:
     void selection();
 };
 
-FLSC :: FLSC (int man, int park, int facility){
+FLSC :: FLSC (int man, int park, int facility, int budget){
 
     manNum = man;
     parkNum = park;
     facilityNum = facility;
+    totalBudget = budget;
+
     totalCost = 0;
 
     parent_pool = new int *[40];
@@ -367,6 +371,7 @@ int** FLSC :: randomZ(int** q, int** T, int num_of_chromosome){
 int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome){
 	int f_cost = 0;
 	int c_cost = 0;
+    int total_cost = 0;
 
 	for(int i = 0; i < PARK; i++){
 		if(parent_pool[num_of_chromosome][i] != 0){
@@ -380,12 +385,24 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
 		}
 	}
 
-	totalCost = f_cost + c_cost;
-	return totalCost;
+	total_cost = f_cost + c_cost;
+	return total_cost;
 }
 
 double FLSC :: fitness(int num_of_chromosome){
 
+    int** ff_area = new int *[parkNum];
+
+    for (int i = 0; i< parkNum; i++) {
+        ff_area[i] = new int[facilityNum];
+    }
+    for (int i = 0; i< parkNum; i++) {
+        for (int j = 0; j < facilityNum; j++){
+            ff_area[i][j]=0;
+        }
+    }
+    ff_area = randomZ(q, T, num_of_chromosome);
+    totalCost = cost(f, c, ff_area, num_of_chromosome);
 
     
 }
@@ -488,8 +505,10 @@ int main(int argc,char* argv[]) {
 	MAN = atoi(argv[1]);
 	PARK = atoi(argv[2]);
 	FACILITY = atoi(argv[3]);
+    BUDGET = atoi(argv[4]);
+
 	
-    FLSC test(MAN,PARK,FACILITY);
+    FLSC test(MAN,PARK,FACILITY,BUDGET);
     parameter();
 
     test.original_gene(S);
@@ -502,6 +521,7 @@ int main(int argc,char* argv[]) {
     //test.display_facility();
     test.display_kid();
     test.display_parent();
+
 
 
 	return 0;
