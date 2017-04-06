@@ -194,7 +194,6 @@ public:
     FLSC();
     FLSC(int man, int park, int facility);
     void original_gene(int** S);
-    void shuffle (int* x);
     void crossover ();
     int** randomZ(int** q, int** T, int num_of_chromosome);
     void display_parent ();
@@ -260,19 +259,6 @@ void FLSC :: original_gene(int** S){
     }
 }
 
-void FLSC :: shuffle (int* x){
-
-    time_t xx;
-    srand((unsigned)time(NULL));
-    
-    for(int i=0;i<poolLength;i++){
-        int n1=rand()%25;
-        int n2=rand()%25;
-        int temp=x[n1];
-        x[n1]=x[n2];
-        x[n2]=temp;
-    }
-}
 
 void FLSC :: crossover (){
 
