@@ -29,7 +29,7 @@ int* c;
 double* k;
 int* d;
 
-int costIteration = 50;
+int costIteration = 2;
 
 
 //-------------------------------------------------------------------------------------------------------
@@ -220,16 +220,19 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
 
     totalCost = 0;
 
-    parent_pool = new int *[40];
-    kid_pool = new int* [40];
+    parent_pool = new int *[poolLength];
+    kid_pool = new int* [poolLength*2];
 
-    for (int i = 0; i<40; i++) {
+    for (int i = 0; i<poolLength; i++) {
         parent_pool[i] = new int[parkNum];
-        kid_pool[i] = new int[parkNum];
-    }
-    for (int i = 0; i<40; i++) {
         for (int j = 0; j < parkNum; j++){
             parent_pool[i][j]=0;
+        }
+    }
+
+    for (int i = 0; i<poolLength*2; i++) {
+        kid_pool[i] = new int[parkNum];
+        for (int j = 0; j < parkNum; j++){
             kid_pool[i][j]=0;
         }
     }
@@ -249,7 +252,6 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
 
 void FLSC :: original_gene(int** S){
 	int scale = 0;
-    srand(unsigned(time(NULL)));
     for(int i=0; i<poolLength; i++){
         for(int j=0; j< parkNum; j++){
         	while(1){
@@ -312,24 +314,22 @@ int** FLSC :: randomZ(int** q, int** T, int num_of_chromosome){
 
 	int js_area = 0;	
 	int is_zero = 0;
-	time_t xx;
-	srand((unsigned)time(NULL));
+	// time_t xx;
     
     int** facility_floor_area = new int *[parkNum];
 
     for (int i = 0; i< parkNum; i++) {
         facility_floor_area[i] = new int[facilityNum];
-    }
-    for (int i = 0; i< parkNum; i++) {
         for (int j = 0; j < facilityNum; j++){
             facility_floor_area[i][j]=0;
-        }
+        }        
     }
+
 
 	for(int i = 0; i < PARK; i++){
 
-		if(parent_pool[num_of_chromosome][i] != 0){
-			js_area = q[i][parent_pool[num_of_chromosome][i]-1];
+		if(kid_pool[num_of_chromosome][i] != 0){
+			js_area = q[i][kid_pool[num_of_chromosome][i]-1];
 			is_zero = 0;
 		}else{
 			is_zero = 1;
@@ -377,8 +377,8 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
     int total_cost = 0;
 
 	for(int i = 0; i < PARK; i++){
-		if(parent_pool[num_of_chromosome][i] != 0){
-			f_cost += f[i][parent_pool[num_of_chromosome][i]-1];
+		if(kid_pool[num_of_chromosome][i] != 0){
+			f_cost += f[i][kid_pool[num_of_chromosome][i]-1];
 		}
 
 	}
@@ -394,12 +394,25 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
 
 double FLSC :: fitness(int num_of_chromosome){
 
-    int ** avalibleDistribution = new int * [parkNum];
-    int** ff_area = new int *[parkNum];
+    int** availableDistribution = new int* [parkNum];
+    int** ff_area = new int* [parkNum];
+    int*** exerciseLocation = new int** [manNum]; 
+
+    for (int i = 0; i< manNum; i++){
+        exerciseLocation[i] = new int*[parkNum];
+        for(int j = 0; j< parkNum; j++){
+            exerciseLocation[i][j] = new int[facilityNum];
+            for (int k = 0; k < facilityNum; k++){
+                exerciseLocation[i][j][k] = 0;
+            }
+        }
+
+    }
 
     for (int i = 0; i< parkNum; i++) {
         ff_area[i] = new int[facilityNum];
-        avalibleDistribution = new int[facilityNum];
+        availableDistribution[i] = new int[facilityNum];
+        
     }
     for (int i = 0; i< parkNum; i++) {
         for (int j = 0; j < facilityNum; j++){
@@ -413,15 +426,19 @@ double FLSC :: fitness(int num_of_chromosome){
         while(cost(f, c, ff_area, num_of_chromosome) > totalBudget){
             ff_area = randomZ(q, T, num_of_chromosome);
         }
-
         for (int i = 0; i< parkNum; i++) {
             for (int j = 0; j < facilityNum; j++){
-                avalibleDistribution[i][j]= ff_area[i][j]*k[j];
+                availableDistribution[i][j]= ff_area[i][j]*k[j];
             }
         }
 
+
+
+
         
     }   
+
+    return rand()%100;
 
 }
 
@@ -434,7 +451,7 @@ void FLSC :: selection(){
     pair < double, int > result;
 
     for(int i = 0; i<poolLength*2; i++){
-        result.first = fitness(i);
+        result.first = fitness(i)/100;
         result.second = i;
         vector_result.push_back(result);
     }
