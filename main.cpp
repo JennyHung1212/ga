@@ -211,14 +211,14 @@ FLSC :: FLSC (int man, int park, int facility){
     facilityNum = facility;
     totalCost = 0;
 
-    parent_pool = new int *[75];
-    kid_pool = new int* [75];
+    parent_pool = new int *[40];
+    kid_pool = new int* [40];
 
-    for (int i = 0; i<75; i++) {
+    for (int i = 0; i<40; i++) {
         parent_pool[i] = new int[parkNum];
         kid_pool[i] = new int[parkNum];
     }
-    for (int i = 0; i < 75; i++) {
+    for (int i = 0; i<40; i++) {
         for (int j = 0; j < parkNum; j++){
             parent_pool[i][j]=0;
             kid_pool[i][j]=0;
@@ -300,6 +300,14 @@ void FLSC :: crossover (){
 
     for (int i = parkNum/2; i < parkNum; i++){       
         kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
+    }
+
+    for (int i = poolLength ; i < 2*poolLength; i++)
+    {
+        for (int j = 0; j < parkNum; j++)
+        {
+            kid_pool[i][j] = parent_pool[i-poolLength][j];
+        }
     }
 
 }
@@ -451,7 +459,7 @@ void FLSC :: display(){
 	}
 
     cout<<"\ncrossover~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-    for (int i = 0; i < 75; i++){
+    for (int i = 0; i < 40; i++){
         for (int j = 0; j < parkNum; j++){
             cout<<kid_pool[i][j]<<" ";
         }
