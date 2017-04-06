@@ -197,7 +197,10 @@ public:
     void shuffle (int* x);
     void crossover ();
     int** randomZ(int** q, int** T, int num_of_chromosome);
-    void display ();
+    void display_parent ();
+    void display_kid ();
+    void display_facility ();
+    void display_cost ();
     double fitness(int num_of_chromosome);
     void mutation();
     int cost(int**f, int*c, int num_of_chromosome);
@@ -440,9 +443,9 @@ void FLSC :: mutation(){
     }
 }
 
-void FLSC :: display(){
+void FLSC :: display_parent(){
 
-	cout<<"\noriginal_gene~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+	cout<<"\nparent_pool~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     for(int i=0; i<poolLength; i++){
         for(int j=0; j<parkNum; j++){
             cout<<parent_pool[i][j]<<" ";
@@ -450,15 +453,11 @@ void FLSC :: display(){
         cout<<endl;
     }	
 
-	cout<<"\nrandomZ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-	for(int i = 0; i < PARK; i++){
-		for(int j = 0; j < FACILITY; j++){
-			cout<<facility_floor_area[i][j]<<"\t";
-		}
-		cout<<endl;
-	}
+}
 
-    cout<<"\ncrossover~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+void FLSC :: display_kid(){
+
+    cout<<"\nkid_pool~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     for (int i = 0; i < 40; i++){
         for (int j = 0; j < parkNum; j++){
             cout<<kid_pool[i][j]<<" ";
@@ -466,12 +465,30 @@ void FLSC :: display(){
         cout<<endl;
     }
 
+
+}
+void FLSC :: display_facility(){
+
+
+
+    cout<<"\nfacility_floor_area~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+    for(int i = 0; i < PARK; i++){
+        for(int j = 0; j < FACILITY; j++){
+            cout<<facility_floor_area[i][j]<<"\t";
+        }
+        cout<<endl;
+    }
+
+}
+
+void FLSC :: display_cost(){
+
     cout<<"\ntotalCost~~~~~~~~~~~~~~~~\n";
     cout<<"$"<<totalCost<<endl;
 
-    cout<<"======================================================\n";
-
 }
+
+
 
 
 //-------------------------------------------------------------------
@@ -489,10 +506,13 @@ int main(int argc,char* argv[]) {
     test.randomZ(q, T, 0);
     test.crossover();
     test.cost(f, c, 0);
-
-    test.display();
     test.selection();
-    test.display();
+
+    test.display_cost();
+    test.display_facility();
+    test.display_kid();
+    test.display_parent();
+
 
 	return 0;
 }
