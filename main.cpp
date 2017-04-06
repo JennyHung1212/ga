@@ -186,7 +186,7 @@ private:
     int facilityNum;
     int totalCost;
     int** parent_pool;
-    int** facility_floor_area;
+    int** optimal_facility_area;
 	int** kid_pool;
 
 public:
@@ -203,7 +203,7 @@ public:
     void display_cost ();
     double fitness(int num_of_chromosome);
     void mutation();
-    int cost(int**f, int*c, int num_of_chromosome);
+    int cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome);
     void selection();
 };
 
@@ -228,14 +228,14 @@ FLSC :: FLSC (int man, int park, int facility){
         }
     }
 
-    facility_floor_area = new int *[parkNum];
+    optimal_facility_area = new int *[parkNum];
 
     for (int i = 0; i< parkNum; i++) {
-    	facility_floor_area[i] = new int[facilityNum];
+    	optimal_facility_area[i] = new int[facilityNum];
     }
     for (int i = 0; i< parkNum; i++) {
     	for (int j = 0; j < facilityNum; j++){
-    		facility_floor_area[i][j]=0;
+    		optimal_facility_area[i][j]=0;
     	}
     }
 }
@@ -321,6 +321,17 @@ int** FLSC :: randomZ(int** q, int** T, int num_of_chromosome){
 	int is_zero = 0;
 	time_t xx;
 	srand((unsigned)time(NULL));
+    
+    int** facility_floor_area = new int *[parkNum];
+
+    for (int i = 0; i< parkNum; i++) {
+        facility_floor_area[i] = new int[facilityNum];
+    }
+    for (int i = 0; i< parkNum; i++) {
+        for (int j = 0; j < facilityNum; j++){
+            facility_floor_area[i][j]=0;
+        }
+    }
 
 	for(int i = 0; i < PARK; i++){
 
@@ -367,7 +378,7 @@ int** FLSC :: randomZ(int** q, int** T, int num_of_chromosome){
 }
 
 
-int FLSC :: cost(int**f, int*c, int num_of_chromosome){
+int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome){
 	int f_cost = 0;
 	int c_cost = 0;
 
@@ -390,21 +401,23 @@ int FLSC :: cost(int**f, int*c, int num_of_chromosome){
 double FLSC :: fitness(int num_of_chromosome){
 
 
+
     
 }
 
 
 
 void FLSC :: selection(){
-    vector < pair <double, int> > vector_result;
 
+    vector < pair <double, int> > vector_result;
     pair < double, int > result;
 
     for(int i = 0; i<poolLength*2; i++){
-        result.first = rand()%40;
+        result.first = fitness(i);
         result.second = i;
         vector_result.push_back(result);
     }
+
     priority_queue < pair <double, int> > select;
 
     for(int i = 0; i < poolLength*2; i++){
@@ -415,12 +428,6 @@ void FLSC :: selection(){
         parent_pool[i] = kid_pool[select.top().second];
         select.pop(); 
     }
-    
-    /*for(int i = 0; i < 40; i++){
-        cout<<select.top().first<<", "<<select.top().second<<endl;
-        select.pop();
-    }*/
-
 }
 
 void FLSC :: mutation(){
@@ -467,9 +474,7 @@ void FLSC :: display_kid(){
 
 
 }
-void FLSC :: display_facility(){
-
-
+/*void FLSC :: display_facility(){
 
     cout<<"\nfacility_floor_area~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     for(int i = 0; i < PARK; i++){
@@ -479,7 +484,7 @@ void FLSC :: display_facility(){
         cout<<endl;
     }
 
-}
+}*/
 
 void FLSC :: display_cost(){
 
@@ -505,11 +510,11 @@ int main(int argc,char* argv[]) {
     test.original_gene(S);
     test.randomZ(q, T, 0);
     test.crossover();
-    test.cost(f, c, 0);
+    //test.cost(f, c, 0);
     test.selection();
 
     test.display_cost();
-    test.display_facility();
+    //test.display_facility();
     test.display_kid();
     test.display_parent();
 
