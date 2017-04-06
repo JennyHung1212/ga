@@ -397,8 +397,13 @@ double FLSC :: fitness(int num_of_chromosome){
     int** availableDistribution = new int* [parkNum];
     int** ff_area = new int* [parkNum];
     int*** exerciseLocation = new int** [manNum]; 
+    int* currentElders = new int[manNum];
+    double tempMax;
+    pair < double, pair<int, int> > pairPreference;
+    vector < vector <pair < double, pair<int, int> > > > vectorPreference(parkNum);
 
     for (int i = 0; i< manNum; i++){
+        currentElders[i] = d[i];
         exerciseLocation[i] = new int*[parkNum];
         for(int j = 0; j< parkNum; j++){
             exerciseLocation[i][j] = new int[facilityNum];
@@ -422,6 +427,9 @@ double FLSC :: fitness(int num_of_chromosome){
 
 
     for(int i = 0; i < costIteration; i++){
+
+        tempMax=0;
+        double tempPeople=0;
         ff_area = randomZ(q, T, num_of_chromosome);
         while(cost(f, c, ff_area, num_of_chromosome) > totalBudget){
             ff_area = randomZ(q, T, num_of_chromosome);
@@ -429,16 +437,134 @@ double FLSC :: fitness(int num_of_chromosome){
         for (int i = 0; i< parkNum; i++) {
             for (int j = 0; j < facilityNum; j++){
                 availableDistribution[i][j]= ff_area[i][j]*k[j];
+                cout<<availableDistribution[i][j]<<" ";
             }
+            cout<<endl;
         }
 
 
+        while(1){
+            bool negative = 1;
+            //cout<<"hey"<<endl;
+            for(int i = 0; i < manNum; i++){
+                for(int j = 0; j < parkNum; j++){
+                    for(int k = 0; k < facilityNum; k++){
+                        pairPreference.first=p[i][j][k];
+                        pairPreference.second.first=j;
+                        pairPreference.second.second=k;
+                        vectorPreference[j].push_back(pairPreference);
+                    }
+                }
 
+                priority_queue < pair < double, pair<int, int> > > queuePreference;
+
+                for(int j = 0; j < parkNum; j++){
+                    for(int k = 0; k < facilityNum; k++){
+                        queuePreference.push(vectorPreference[j][k]);
+                    }
+                }
+
+
+                while(availableDistribution[queuePreference.top().second.first][queuePreference.top().second.second]==0 && !queuePreference.empty()){
+                    p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                    queuePreference.pop();
+
+                    //cout<<"yo~"<<endl;
+
+                }
+
+                if(currentElders[i] <= availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] ){
+
+                    exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += currentElders[i];
+                    availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] -= currentElders[i];
+                    currentElders[i]=0;
+                    p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                }else{
+
+                    currentElders[i] -=  availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
+                    exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += 
+                        availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
+                    availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second]=0;
+                    p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                    //cout<<currentElders[i]<<" "<<d[i]<<" "<<availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second]<<endl;
+                    //cout<<"j="<<queuePreference.top().second.first<<"k="<<queuePreference.top().second.second<<endl;
+                }
+                //cout<<p[i][queuePreference.top().second.first][queuePreference.top().second.second];
+               
+            }
+
+            for(int i = 0; i < manNum; i++){
+                for(int j = 0; j < parkNum; j++){
+                    for(int k = 0; k < facilityNum; k++){
+                        if(p[i][j][k] != -1){
+                            negative = 0;
+                        }
+                    }
+                }
+            }
+
+            if(negative == 1){
+                //cout<<"stop1!";
+                break;
+            }
+
+
+            // for(int i = 0; i < manNum; i++){
+            //     cout<<"d and currentElders:"<<endl;
+            //     cout<<d[i]<<" "<<currentElders[i];
+            //     cout<<endl;
+            // }
+        }
+        
+        for(int i = 0; i < manNum; i++){
+            for(int j = 0; j < parkNum; j++){
+                for(int k = 0; k < facilityNum; k++){
+                    tempPeople += exerciseLocation[i][j][k];
+                }
+            }
+        }
+
+        if (tempPeople>=tempMax)
+        {
+            tempMax = tempPeople;
+             // for (int i = 0; i< parkNum; i++) {
+             //    for (int j = 0; j < facilityNum; j++){
+                //optimal_facility_area[i][j] = ff_area[i][j];
+             // }
+            optimal_facility_area = ff_area;
+    
+        }
+
+        // cout<<"exerciseLocation~~~~~~\n";
+        // for(int k = 0; k<manNum; k++){
+        //     for(int i = 0; i < parkNum; i++){
+        //         for(int j = 0; j < facilityNum; j++){
+        //             cout<< exerciseLocation[k][i][j]<<" ";
+        //         }
+        //         cout<<endl;
+        //     }
+        //     cout<<endl;
+
+        // }
+
+        // cout<<"~~~~~~~~~~\n";
+
+        // cout<<"availableDistribution~~~~~~~~\n";
+        // for (int i = 0; i< parkNum; i++) {
+        //     for (int j = 0; j < facilityNum; j++){
+                
+        //         cout<<availableDistribution[i][j]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
 
         
-    }   
+    } 
 
-    return rand()%100;
+   
+
+
+    return tempMax;
 
 }
 
@@ -451,7 +577,7 @@ void FLSC :: selection(){
     pair < double, int > result;
 
     for(int i = 0; i<poolLength*2; i++){
-        result.first = fitness(i)/100;
+        result.first = fitness(i);
         result.second = i;
         vector_result.push_back(result);
     }
