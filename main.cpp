@@ -168,6 +168,7 @@ void parameter() {
     d = file1Input("ga/d_"+to_string(FILE_pos)+".csv",MAN);
     p = file3Input("ga/p_"+to_string(FILE_pos)+".csv",MAN,PARK,FACILITY);
 }
+
 //------------------------------------------------------------------------------------
 //class FLSC
 
@@ -407,7 +408,7 @@ void FLSC :: display(){
         cout<<endl;
     }	
 
-	cout<<"\nrzndomZ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+	cout<<"\nrandomZ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 	for(int i = 0; i < PARK; i++){
 		for(int j = 0; j < FACILITY; j++){
 			cout<<facility_floor_area[i][j]<<"\t";
