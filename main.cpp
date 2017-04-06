@@ -389,9 +389,9 @@ int FLSC :: cost(int**f, int*c, int num_of_chromosome){
 
 double FLSC :: fitness(int num_of_chromosome){
 
-
     
 }
+
 
 
 
@@ -405,6 +405,7 @@ void FLSC :: selection(){
         result.second = i;
         vector_result.push_back(result);
     }
+
     priority_queue < pair <double, int> > select;
 
     for(int i = 0; i < poolLength*2; i++){
@@ -470,7 +471,6 @@ void FLSC :: display_kid(){
 void FLSC :: display_facility(){
 
 
-
     cout<<"\nfacility_floor_area~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     for(int i = 0; i < PARK; i++){
         for(int j = 0; j < FACILITY; j++){
@@ -487,8 +487,6 @@ void FLSC :: display_cost(){
     cout<<"$"<<totalCost<<endl;
 
 }
-
-
 
 
 //-------------------------------------------------------------------
