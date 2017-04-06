@@ -386,11 +386,7 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
 
 double FLSC :: fitness(int num_of_chromosome){
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 4abcd00f3c079e69b9c7b46d4f5abf7cf9c966fe
     
 }
 
@@ -464,12 +460,8 @@ void FLSC :: display_kid(){
 
 
 }
-<<<<<<< HEAD
-/*void FLSC :: display_facility(){
-=======
-void FLSC :: display_facility(){
 
->>>>>>> 4abcd00f3c079e69b9c7b46d4f5abf7cf9c966fe
+/*void FLSC :: display_facility(){
 
     cout<<"\nfacility_floor_area~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     for(int i = 0; i < PARK; i++){
