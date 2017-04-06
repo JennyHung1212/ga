@@ -388,6 +388,7 @@ void FLSC :: mutation(){
 
             if (r<mutationPosibility){
                int muNum = rand()%6;
+               kid_pool[i][j]=muNum;
                while (muNum==kid_pool[i][j]){
                    muNum=rand()%6;
                    kid_pool[i][j]=muNum;
@@ -407,7 +408,7 @@ void FLSC :: display(){
         cout<<endl;
     }	
 
-	cout<<"\nrzndomZ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+	cout<<"\nrandomZ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 	for(int i = 0; i < PARK; i++){
 		for(int j = 0; j < FACILITY; j++){
 			cout<<facility_floor_area[i][j]<<"\t";
