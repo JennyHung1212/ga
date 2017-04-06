@@ -404,7 +404,44 @@ double FLSC :: fitness(int num_of_chromosome){
     ff_area = randomZ(q, T, num_of_chromosome);
     totalCost = cost(f, c, ff_area, num_of_chromosome);
 
-    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int ** avalibleDistribution = new int * [parkNum];
+
+    for (int i = 0; i< parkNum; i++) {
+        avalibleDistribution = new int[facilityNum];
+    }
+
+    for (int i = 0; i< parkNum; i++) {
+        for (int j = 0; j < facilityNum; j++){
+            avalibleDistribution[i][j]= ff_area[i][j]*k[j];
+        }
+    }
+
+
+
+
+
+
 }
 
 
