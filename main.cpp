@@ -194,7 +194,6 @@ public:
     FLSC();
     FLSC(int man, int park, int facility);
     void original_gene(int** S);
-    void shuffle (int* x);
     void crossover ();
     int** randomZ(int** q, int** T, int num_of_chromosome);
     void display_parent ();
@@ -260,19 +259,6 @@ void FLSC :: original_gene(int** S){
     }
 }
 
-void FLSC :: shuffle (int* x){
-
-    time_t xx;
-    srand((unsigned)time(NULL));
-    
-    for(int i=0;i<poolLength;i++){
-        int n1=rand()%25;
-        int n2=rand()%25;
-        int temp=x[n1];
-        x[n1]=x[n2];
-        x[n2]=temp;
-    }
-}
 
 void FLSC :: crossover (){
 
@@ -400,10 +386,14 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
 
 double FLSC :: fitness(int num_of_chromosome){
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 4abcd00f3c079e69b9c7b46d4f5abf7cf9c966fe
     
 }
+
 
 
 
@@ -474,7 +464,12 @@ void FLSC :: display_kid(){
 
 
 }
+<<<<<<< HEAD
 /*void FLSC :: display_facility(){
+=======
+void FLSC :: display_facility(){
+
+>>>>>>> 4abcd00f3c079e69b9c7b46d4f5abf7cf9c966fe
 
     cout<<"\nfacility_floor_area~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
     for(int i = 0; i < PARK; i++){
@@ -492,8 +487,6 @@ void FLSC :: display_cost(){
     cout<<"$"<<totalCost<<endl;
 
 }
-
-
 
 
 //-------------------------------------------------------------------
