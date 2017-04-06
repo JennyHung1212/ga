@@ -405,18 +405,58 @@ double FLSC :: fitness(int num_of_chromosome){
         }
     }
 
+<<<<<<< HEAD
 
     for(int i = 0; i < costIteration; i++){
         ff_area = randomZ(q, T, num_of_chromosome);
         while(cost(f, c, ff_area, num_of_chromosome) > totalBudget){
             ff_area = randomZ(q, T, num_of_chromosome);
         }
+=======
+ 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    int ** avalibleDistribution = new int * [parkNum];
+
+    for (int i = 0; i< parkNum; i++) {
+        avalibleDistribution = new int[facilityNum];
+    }
+
+    for (int i = 0; i< parkNum; i++) {
+        for (int j = 0; j < facilityNum; j++){
+            avalibleDistribution[i][j]= ff_area[i][j]*k[j];
+        }
+    }
+
+
+>>>>>>> 31acfd566cdcd71575cf75f415d7ea429368238f
+
+
+
+
+<<<<<<< HEAD
         
     }   
+=======
+>>>>>>> 31acfd566cdcd71575cf75f415d7ea429368238f
 }
 
 
