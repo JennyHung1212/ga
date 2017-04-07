@@ -187,6 +187,7 @@ struct chromosome{
     int** locationFacility;
     int numOfExercise;
 
+
     chromosome(){
         scale = new int[SCALE];
         locationFacility = new int*[PARK];
@@ -600,7 +601,7 @@ double FLSC :: fitness(int num_of_chromosome){
             tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
         }
         for(int i = 0; i < parkNum; i++){
-            
+
             for(int j = 0; j < facilityNum; j++){
                 cout<<optimal_facility_area[i][j]<<" ";
                 //tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
