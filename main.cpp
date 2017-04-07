@@ -31,7 +31,7 @@ double* k;
 int* d;
 
 int costIteration = 2;
-int callIteration = 2;
+int callIteration = 5;
 
 //-------------------------------------------------------------------------------------------------------
 //input function
@@ -218,10 +218,8 @@ struct chromosome{
 
 };
 
-
-
 bool comparison(const chromosome& a, const chromosome& b){
-    return a.numOfExercise < b.numOfExercise;
+    return a.numOfExercise > b.numOfExercise;
 }
 
 
@@ -481,6 +479,7 @@ double FLSC :: fitness(int num_of_chromosome){
         cout<<"SAME!!!!!"<<endl;
         return chromosomeArray[index].numOfExercise;
     }
+
     else{
 
         int** availableDistribution = new int* [parkNum];
@@ -609,30 +608,14 @@ double FLSC :: fitness(int num_of_chromosome){
 
         } 
 
-        cout<<"$$$$$$$$$$$$$\n";
-<<<<<<< HEAD
-        int* temp = kid_pool[num_of_chromosome];
-        chromosome tempChromosome(temp, optimal_facility_area, tempMax);
-        //tempChromosome.scale = kid_pool[num_of_chromosome];
-        //tempChromosome.numOfExercise = tempMax;
-
-        // for(int i = 0; i < parkNum; i++){
-        //     tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
-        // }
-        for(int i = 0; i < parkNum; i++){
-
-            for(int j = 0; j < facilityNum; j++){
-                //int a = tempChromosome.locationFacility[i][j];
-                cout<<tempChromosome.locationFacility[i][j]<<" ";
-                //tempChromosome.locationFacility[i][j] = a ;
-                //cout<<tempChromosome.numOfExercise;
-=======
+       
         chromosome tempChromosome;
         tempChromosome.numOfExercise = tempMax;
 
 
         for(int i = 0; i < parkNum; i++){
             tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
+            cout<<tempChromosome.scale[i]<<"* ";
         }
 
         tempChromosome.locationFacility = new int*[parkNum];
@@ -643,20 +626,19 @@ double FLSC :: fitness(int num_of_chromosome){
 
             for(int j = 0; j < facilityNum; j++){
                 tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
->>>>>>> 68f830151aea9d0d6c6591ed7815b2f035ee431a
             }
             cout<< endl;
         }
 
 
         chromosomeArray.push_back(tempChromosome);
-            
-
+      
         return tempMax;
 
     }
 
 }
+
 
 
 
