@@ -9,6 +9,8 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <memory>
+
 using namespace std;
 
 //global variable
@@ -201,19 +203,7 @@ struct chromosome{
         numOfExercise = 0;
     }
 
-    chromosome(int* y, int** tempZ, int max){
-        scale = new int[SCALE];
-        locationFacility = new int*[PARK];
-        for(int i = 0; i < PARK; i++){
-            scale[i] = y[i];
-            locationFacility[i] = new int[FACILITY];
-            for(int j = 0; j< FACILITY; j++){
-                locationFacility[i][j] = tempZ[i][j];
-            }
-        }
-        numOfExercise = max;
-    }
-
+    
 
 
 };
@@ -312,7 +302,7 @@ void FLSC :: original_gene(int** S){
 		    	}else if(scale == 0){
 		    		parent_pool[i][j] = 0;
 		    		break;
-		    	}        		
+		    	}      		
         	}          
         }
     }
@@ -454,8 +444,13 @@ double FLSC :: fitness(int num_of_chromosome){
         for(int j = 0; j< parkNum; j++){
             cout<<"*"<<kid_pool[num_of_chromosome][j]<<" "; 
 
+        }
+        cout<<endl;
+        for(int j = 0; j< parkNum; j++){
+
             cout<<"#"<<chromosomeArray[i].scale[j]<<" ";
         }
+        cout<<endl;
         for (int j = 0; j < parkNum; j++){
 
             if(chromosomeArray[i].scale[j] != kid_pool[num_of_chromosome][j]){
@@ -615,7 +610,7 @@ double FLSC :: fitness(int num_of_chromosome){
 
         for(int i = 0; i < parkNum; i++){
             tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
-            cout<<tempChromosome.scale[i]<<"* ";
+            // cout<<tempChromosome.scale[i]<<"* ";
         }
 
         tempChromosome.locationFacility = new int*[parkNum];
@@ -632,15 +627,11 @@ double FLSC :: fitness(int num_of_chromosome){
 
 
         chromosomeArray.push_back(tempChromosome);
-      
+
         return tempMax;
 
     }
-
 }
-
-
-
 
 
 void FLSC :: selection(){
@@ -767,6 +758,9 @@ int main(int argc,char* argv[]) {
     parameter();
 
     test.GA();
+    //test.display_kid();
+
+
     //test.original_gene(S);
     // test.randomZ(q, T, 0);
     //test.crossover();
