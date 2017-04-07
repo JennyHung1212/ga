@@ -556,7 +556,6 @@ double FLSC :: fitness(int num_of_chromosome){
                         p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
                     }
                                    
-<<<<<<< HEAD
                 }
 
                 for(int i = 0; i < manNum; i++){
@@ -566,7 +565,6 @@ double FLSC :: fitness(int num_of_chromosome){
                                 negative = 0;
                             }
                         }
-=======
                 }
 
                 for(int i = 0; i < manNum; i++){
@@ -590,11 +588,9 @@ double FLSC :: fitness(int num_of_chromosome){
                 for(int j = 0; j < parkNum; j++){
                     for(int k = 0; k < facilityNum; k++){
                         tempPeople += exerciseLocation[i][j][k];
->>>>>>> 95c039f0b99f8e5681ba55d6ff39afe42a4e7909
                     }
                 }
 
-<<<<<<< HEAD
                 if(negative == 1){
                     break;
                 }
@@ -624,7 +620,6 @@ double FLSC :: fitness(int num_of_chromosome){
 
 
         chromosomeArray.push_back(tempChromosome);
-=======
             if (tempPeople>=tempMax){
                 cout<<"~~~~~~~~~~~";
                 tempMax = tempPeople;
@@ -653,7 +648,6 @@ double FLSC :: fitness(int num_of_chromosome){
 
 
         //chromosomeArray.push_back(tempChromosome);
->>>>>>> 95c039f0b99f8e5681ba55d6ff39afe42a4e7909
             
 
         return tempMax;
