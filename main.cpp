@@ -185,7 +185,6 @@ struct chromosome{
     int* scale;
     int** locationFacility;
     int numOfExercise;
-    int index;
 
     chromosome(){
         scale = new int[SCALE];
@@ -197,7 +196,6 @@ struct chromosome{
             }
         }
         numOfExercise = 0;
-        index = 0;
     }
 
 };
@@ -274,6 +272,10 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
     	for (int j = 0; j < facilityNum; j++){
     		optimal_facility_area[i][j]=0;
     	}
+    }
+    for (int i = 0; i < poolLength; i++){
+        chromosome temp;
+        chromosomeArray.push_back(temp);
     }
 
 
@@ -424,6 +426,36 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
 
 
 double FLSC :: fitness(int num_of_chromosome){
+   
+    bool the_same ;
+    int equalCount;
+    int index;
+    for(int i = 0; i < poolLength; i++){
+        the_same = 0;
+        equalCount=0;
+        for (int j = 0; j < parkNum; j++)
+        {
+
+            while(chromosomeArray[i].scale[j] == kid_pool[num_of_chromosome][j]){
+                equalCount++;
+            } 
+           
+        }  
+        
+        if (equalCount == parkNum)
+        {
+            the_same=1;
+            index=i;
+            break;
+        }
+
+    }
+
+    if(the_same == 1){
+        return chromosomeArray[index].numOfExercise;
+    }
+
+    else{
 
     int** availableDistribution = new int* [parkNum];
     int** ff_area = new int* [parkNum];
@@ -455,6 +487,7 @@ double FLSC :: fitness(int num_of_chromosome){
             ff_area[i][j]=0;
         }
     }
+
 
 
     for(int i = 0; i < costIteration; i++){
@@ -550,14 +583,17 @@ double FLSC :: fitness(int num_of_chromosome){
 
 
     chromosome tempChromosome;
+    tempChromosome.scale = kid_pool[num_of_chromosome];
     tempChromosome.numOfExercise = tempMax;
     tempChromosome.locationFacility = optimal_facility_area;
-    tempChromosome.index = num_of_chromosome;
+
 
     chromosomeArray.push_back(tempChromosome);
         
 
     return tempMax;
+
+}
 
 }
 
@@ -571,6 +607,7 @@ void FLSC :: selection(){
 
     for(int i = 0; i<poolLength*2; i++){
         result.first = fitness(i);
+        cout<<"fit!\n";
         result.second = i;
         vector_result.push_back(result);
     }
@@ -589,6 +626,8 @@ void FLSC :: selection(){
     for(int i = 0; i < poolLength; i++){
         chromosomeArray.pop_back();
     }
+
+    cout<<"Selection!~!\n";
 
 }
 
@@ -641,11 +680,29 @@ void FLSC :: display_cost(){
 void FLSC :: GA(){
 
     while(callIteration>1){
-
         crossover();
         mutation();
+        cout<<"yoooo\n";
         selection();
         callIteration--;
+    }
+
+    cout<<"Max~~~~~~~~~~~~\n";
+    cout<<chromosomeArray[0].numOfExercise<<endl;
+
+    cout<<"y~~~~~~~~~~~~\n";
+    for (int i = 0; i < parkNum; i++)
+    {
+        cout<<chromosomeArray[0].scale[i]<<" ";
+    }
+    cout<<endl;
+
+    cout<<"Z~~~~~~~~~~~\n";
+    for (int i = 0; i < parkNum; i++){
+        for (int j = 0; j < facilityNum; j++){
+            cout<<chromosomeArray[0].locationFacility[i][j]<<" ";
+        }
+        cout<<endl;
     }
 
 }
@@ -664,16 +721,17 @@ int main(int argc,char* argv[]) {
     FLSC test(MAN,PARK,FACILITY,BUDGET);
     parameter();
 
-    test.original_gene(S);
-    test.randomZ(q, T, 0);
-    test.crossover();
-    //test.cost(f, c, 0);
-    test.selection();
+    test.GA();
+    //test.original_gene(S);
+    // test.randomZ(q, T, 0);
+    //test.crossover();
+    // //test.cost(f, c, 0);
+   // test.selection();
 
-    test.display_cost();
-    //test.display_facility();
-    test.display_kid();
-    test.display_parent();
+    // test.display_cost();
+    // //test.display_facility();
+    // test.display_kid();
+    // test.display_parent();
 
 
 
