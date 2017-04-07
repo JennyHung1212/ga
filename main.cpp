@@ -192,7 +192,7 @@ struct chromosome{
         scale = new int[SCALE];
         locationFacility = new int*[PARK];
         for(int i = 0; i < PARK; i++){
-            scale[i] = 0;
+            scale[i] = 1;
             locationFacility[i] = new int[FACILITY];
             for(int j = 0; j< FACILITY; j++){
                 locationFacility[i][j] = 1;
@@ -202,6 +202,8 @@ struct chromosome{
     }
 
 };
+
+
 
 bool comparison(const chromosome& a, const chromosome& b){
     return a.numOfExercise < b.numOfExercise;
@@ -511,7 +513,7 @@ double FLSC :: fitness(int num_of_chromosome){
                 for (int j = 0; j < facilityNum; j++){
                     availableDistribution[i][j]= ff_area[i][j]*k[j];
                 }
-                cout<<endl;
+
             }
 
 
@@ -594,25 +596,27 @@ double FLSC :: fitness(int num_of_chromosome){
 
         cout<<"$$$$$$$$$$$$$\n";
         chromosome tempChromosome;
-        //tempChromosome.scale = kid_pool[num_of_chromosome];
         tempChromosome.numOfExercise = tempMax;
+
 
         for(int i = 0; i < parkNum; i++){
             tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
         }
+
+        tempChromosome.locationFacility = new int*[parkNum];
+        for(int i = 0; i < parkNum; i++){
+            tempChromosome.locationFacility[i] = new int[facilityNum];
+        }
         for(int i = 0; i < parkNum; i++){
 
             for(int j = 0; j < facilityNum; j++){
-                cout<<optimal_facility_area[i][j]<<" ";
-                //tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
+                tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
             }
             cout<< endl;
         }
 
-        //tempChromosome.locationFacility = optimal_facility_area;
 
-
-        //chromosomeArray.push_back(tempChromosome);
+        chromosomeArray.push_back(tempChromosome);
             
 
         return tempMax;
