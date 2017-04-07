@@ -192,7 +192,7 @@ struct chromosome{
         scale = new int[SCALE];
         locationFacility = new int*[PARK];
         for(int i = 0; i < PARK; i++){
-            scale[i] = 0;
+            scale[i] = 1;
             locationFacility[i] = new int[FACILITY];
             for(int j = 0; j< FACILITY; j++){
                 locationFacility[i][j] = 1;
@@ -200,6 +200,21 @@ struct chromosome{
         }
         numOfExercise = 0;
     }
+
+    chromosome(int* y, int** tempZ, int max){
+        scale = new int[SCALE];
+        locationFacility = new int*[PARK];
+        for(int i = 0; i < PARK; i++){
+            scale[i] = y[i];
+            locationFacility[i] = new int[FACILITY];
+            for(int j = 0; j< FACILITY; j++){
+                locationFacility[i][j] = tempZ[i][j];
+            }
+        }
+        numOfExercise = max;
+    }
+
+
 
 };
 
@@ -593,18 +608,21 @@ double FLSC :: fitness(int num_of_chromosome){
         } 
 
         cout<<"$$$$$$$$$$$$$\n";
-        chromosome tempChromosome;
+        int* temp = kid_pool[num_of_chromosome];
+        chromosome tempChromosome(temp, optimal_facility_area, tempMax);
         //tempChromosome.scale = kid_pool[num_of_chromosome];
-        tempChromosome.numOfExercise = tempMax;
+        //tempChromosome.numOfExercise = tempMax;
 
-        for(int i = 0; i < parkNum; i++){
-            tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
-        }
+        // for(int i = 0; i < parkNum; i++){
+        //     tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
+        // }
         for(int i = 0; i < parkNum; i++){
 
             for(int j = 0; j < facilityNum; j++){
-                cout<<optimal_facility_area[i][j]<<" ";
-                //tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
+                //int a = tempChromosome.locationFacility[i][j];
+                cout<<tempChromosome.locationFacility[i][j]<<" ";
+                //tempChromosome.locationFacility[i][j] = a ;
+                //cout<<tempChromosome.numOfExercise;
             }
             cout<< endl;
         }
