@@ -181,6 +181,30 @@ void parameter() {
 
 const int poolLength =20;
 
+struct chromosome{
+    int* scale;
+    int** locationFacility;
+    int numOfExercise;
+    int index;
+
+    chromosome(){
+        scale = new int[SCALE];
+        locationFacility = new int*[PARK];
+        for(int i = 0; i < PARK; i++){
+            locationFacility[i] = new int[FACILITY];
+            for(int j = 0; j< FACILITY; j++){
+                locationFacility[i][j] = 0;
+            }
+        }
+        numOfExercise = 0;
+        index = 0;
+    }
+};
+
+
+
+
+
 class FLSC {
 
 private:
@@ -193,6 +217,7 @@ private:
     int** parent_pool;
     int** optimal_facility_area;
 	int** kid_pool;
+    vector <chromosome> chromosomeArray;
 
 public:
 
@@ -247,6 +272,8 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
     		optimal_facility_area[i][j]=0;
     	}
     }
+
+
 }
 
 
@@ -392,6 +419,7 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
 	return total_cost;
 }
 
+
 double FLSC :: fitness(int num_of_chromosome){
 
     int** availableDistribution = new int* [parkNum];
@@ -437,7 +465,7 @@ double FLSC :: fitness(int num_of_chromosome){
         for (int i = 0; i< parkNum; i++) {
             for (int j = 0; j < facilityNum; j++){
                 availableDistribution[i][j]= ff_area[i][j]*k[j];
-                cout<<availableDistribution[i][j]<<" ";
+                //cout<<availableDistribution[i][j]<<" ";
             }
             cout<<endl;
         }
@@ -562,7 +590,7 @@ double FLSC :: fitness(int num_of_chromosome){
     } 
 
    
-
+  
 
     return tempMax;
 
