@@ -187,6 +187,7 @@ struct chromosome{
     int** locationFacility;
     int numOfExercise;
 
+
     chromosome(){
         scale = new int[SCALE];
         locationFacility = new int*[PARK];
@@ -565,15 +566,6 @@ double FLSC :: fitness(int num_of_chromosome){
                                 negative = 0;
                             }
                         }
-                }
-
-                for(int i = 0; i < manNum; i++){
-                    for(int j = 0; j < parkNum; j++){
-                        for(int k = 0; k < facilityNum; k++){
-                            if(p[i][j][k] != -1){
-                                negative = 0;
-                            }
-                        }
                     }
                 }
 
@@ -590,36 +582,8 @@ double FLSC :: fitness(int num_of_chromosome){
                         tempPeople += exerciseLocation[i][j][k];
                     }
                 }
-
-                if(negative == 1){
-                    break;
-                }
-
-            }
-            
-            for(int i = 0; i < manNum; i++){
-                for(int j = 0; j < parkNum; j++){
-                    for(int k = 0; k < facilityNum; k++){
-                        tempPeople += exerciseLocation[i][j][k];
-                    }
-                }
             }
 
-            if (tempPeople>=tempMax){
-                tempMax = tempPeople;
-                optimal_facility_area = ff_area;   
-            }
-
-        } 
-
-
-        chromosome tempChromosome;
-        tempChromosome.scale = kid_pool[num_of_chromosome];
-        tempChromosome.numOfExercise = tempMax;
-        tempChromosome.locationFacility = optimal_facility_area;
-
-
-        chromosomeArray.push_back(tempChromosome);
             if (tempPeople>=tempMax){
                 cout<<"~~~~~~~~~~~";
                 tempMax = tempPeople;
@@ -637,6 +601,7 @@ double FLSC :: fitness(int num_of_chromosome){
             tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
         }
         for(int i = 0; i < parkNum; i++){
+
             for(int j = 0; j < facilityNum; j++){
                 cout<<optimal_facility_area[i][j]<<" ";
                 //tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
