@@ -714,7 +714,6 @@ void FLSC :: display_cost(){
 void FLSC :: GA(){
 
     original_gene(S);
-                display_parent();
 
     while(callIteration>1){
 
@@ -743,7 +742,6 @@ void FLSC :: GA(){
         cout<<endl;
     }
 
-    display_parent();
 
 }
 
