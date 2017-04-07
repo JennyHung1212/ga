@@ -206,7 +206,7 @@ struct chromosome{
 
 
 bool comparison(const chromosome& a, const chromosome& b){
-    return a.numOfExercise < b.numOfExercise;
+    return a.numOfExercise > b.numOfExercise;
 }
 
 
@@ -612,7 +612,6 @@ double FLSC :: fitness(int num_of_chromosome){
             for(int j = 0; j < facilityNum; j++){
                 tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
             }
-            cout<< endl;
         }
 
 
@@ -721,8 +720,7 @@ void FLSC :: GA(){
     cout<<chromosomeArray[0].numOfExercise<<endl;
 
     cout<<"y~~~~~~~~~~~~\n";
-    for (int i = 0; i < parkNum; i++)
-    {
+    for (int i = 0; i < parkNum; i++){
         cout<<chromosomeArray[0].scale[i]<<" ";
     }
     cout<<endl;
