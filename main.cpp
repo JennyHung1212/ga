@@ -30,7 +30,6 @@ double* k;
 int* d;
 
 int costIteration = 2;
-int callIteration = 10;
 
 
 //-------------------------------------------------------------------------------------------------------
@@ -200,10 +199,12 @@ struct chromosome{
         numOfExercise = 0;
         index = 0;
     }
+
 };
 
-
-
+bool comparison(const chromosome& a, const chromosome& b){
+    return a.numOfExercise > b.numOfExercise;
+}
 
 
 class FLSC {
@@ -466,7 +467,6 @@ double FLSC :: fitness(int num_of_chromosome){
         for (int i = 0; i< parkNum; i++) {
             for (int j = 0; j < facilityNum; j++){
                 availableDistribution[i][j]= ff_area[i][j]*k[j];
-                //cout<<availableDistribution[i][j]<<" ";
             }
             cout<<endl;
         }
@@ -474,7 +474,6 @@ double FLSC :: fitness(int num_of_chromosome){
 
         while(1){
             bool negative = 1;
-            //cout<<"hey"<<endl;
             for(int i = 0; i < manNum; i++){
                 for(int j = 0; j < parkNum; j++){
                     for(int k = 0; k < facilityNum; k++){
@@ -498,8 +497,6 @@ double FLSC :: fitness(int num_of_chromosome){
                     p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
                     queuePreference.pop();
 
-                    //cout<<"yo~"<<endl;
-
                 }
 
                 if(currentElders[i] <= availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] ){
@@ -515,11 +512,8 @@ double FLSC :: fitness(int num_of_chromosome){
                         availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
                     availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second]=0;
                     p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
-                    //cout<<currentElders[i]<<" "<<d[i]<<" "<<availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second]<<endl;
-                    //cout<<"j="<<queuePreference.top().second.first<<"k="<<queuePreference.top().second.second<<endl;
                 }
-                //cout<<p[i][queuePreference.top().second.first][queuePreference.top().second.second];
-               
+                               
             }
 
             for(int i = 0; i < manNum; i++){
@@ -533,16 +527,9 @@ double FLSC :: fitness(int num_of_chromosome){
             }
 
             if(negative == 1){
-                //cout<<"stop1!";
                 break;
             }
 
-
-            // for(int i = 0; i < manNum; i++){
-            //     cout<<"d and currentElders:"<<endl;
-            //     cout<<d[i]<<" "<<currentElders[i];
-            //     cout<<endl;
-            // }
         }
         
         for(int i = 0; i < manNum; i++){
@@ -553,45 +540,21 @@ double FLSC :: fitness(int num_of_chromosome){
             }
         }
 
-        if (tempPeople>=tempMax)
-        {
+        if (tempPeople>=tempMax){
             tempMax = tempPeople;
-             // for (int i = 0; i< parkNum; i++) {
-             //    for (int j = 0; j < facilityNum; j++){
-                //optimal_facility_area[i][j] = ff_area[i][j];
-             // }
-            optimal_facility_area = ff_area;
-    
+            optimal_facility_area = ff_area;   
         }
 
-        // cout<<"exerciseLocation~~~~~~\n";
-        // for(int k = 0; k<manNum; k++){
-        //     for(int i = 0; i < parkNum; i++){
-        //         for(int j = 0; j < facilityNum; j++){
-        //             cout<< exerciseLocation[k][i][j]<<" ";
-        //         }
-        //         cout<<endl;
-        //     }
-        //     cout<<endl;
-
-        // }
-
-        // cout<<"~~~~~~~~~~\n";
-
-        // cout<<"availableDistribution~~~~~~~~\n";
-        // for (int i = 0; i< parkNum; i++) {
-        //     for (int j = 0; j < facilityNum; j++){
-                
-        //         cout<<availableDistribution[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-
-        
     } 
 
-   
-  
+
+    chromosome tempChromosome;
+    tempChromosome.numOfExercise = tempMax;
+    tempChromosome.locationFacility = optimal_facility_area;
+    tempChromosome.index = num_of_chromosome;
+
+    chromosomeArray.push_back(tempChromosome);
+        
 
     return tempMax;
 
@@ -621,23 +584,32 @@ void FLSC :: selection(){
         parent_pool[i] = kid_pool[select.top().second];
         select.pop(); 
     }
+    sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
+    for(int i = 0; i < poolLength; i++){
+        chromosomeArray.pop_back();
+    }
+
 }
 
 void FLSC :: mutation(){
 
-    const int mutationPosibility = 100;
+    const int mutationPosibility = 3;
 
     for (int i = 0; i < poolLength; i++){
-        int r = rand()%mutationPosibility;
-        if(r == 0) {
-            int pos = rand()%parkNum;
-            int changedNum = rand()%6;
-            kid_pool[i][pos] = changedNum;
+        for (int j = 0; j < parkNum; j++){
+            int r = rand()%100;
+
+            if (r<mutationPosibility){
+               int muNum = rand()%6;
+               kid_pool[i][j]=muNum;
+               while (muNum==kid_pool[i][j]){
+                   muNum=rand()%6;
+                   kid_pool[i][j]=muNum;
+               }
+            }
         }
     }
 }
-
-
 
 void FLSC :: display_parent(){
 
@@ -664,8 +636,6 @@ void FLSC :: display_kid(){
 
 }
 
-
-
 /*void FLSC :: display_facility(){
 
     cout<<"\nfacility_floor_area~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -684,36 +654,6 @@ void FLSC :: display_cost(){
     cout<<"$"<<totalCost<<endl;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void FLSC :: GA(){
-
-    original_gene(S);
-
-    while(callIteration>0){
-        crossover();
-        mutation();
-        selection();
-        callIteration--;
-    }
-
-    
-}
-
-
 
 
 //-------------------------------------------------------------------
