@@ -30,7 +30,7 @@ double* k;
 int* d;
 
 int costIteration = 2;
-
+int callIteration = 10;
 
 //-------------------------------------------------------------------------------------------------------
 //input function
@@ -236,6 +236,7 @@ public:
     void mutation();
     int cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome);
     void selection();
+    void GA();
 };
 
 FLSC :: FLSC (int man, int park, int facility, int budget){
@@ -593,20 +594,14 @@ void FLSC :: selection(){
 
 void FLSC :: mutation(){
 
-    const int mutationPosibility = 3;
+    const int mutationPosibility = 100;
 
     for (int i = 0; i < poolLength; i++){
-        for (int j = 0; j < parkNum; j++){
-            int r = rand()%100;
-
-            if (r<mutationPosibility){
-               int muNum = rand()%6;
-               kid_pool[i][j]=muNum;
-               while (muNum==kid_pool[i][j]){
-                   muNum=rand()%6;
-                   kid_pool[i][j]=muNum;
-               }
-            }
+        int r = rand()%mutationPosibility;
+        if(r == 0) {
+            int pos = rand()%parkNum;
+            int changedNum = rand()%6;
+            kid_pool[i][pos] = changedNum;
         }
     }
 }
@@ -636,22 +631,22 @@ void FLSC :: display_kid(){
 
 }
 
-/*void FLSC :: display_facility(){
-
-    cout<<"\nfacility_floor_area~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-    for(int i = 0; i < PARK; i++){
-        for(int j = 0; j < FACILITY; j++){
-            cout<<facility_floor_area[i][j]<<"\t";
-        }
-        cout<<endl;
-    }
-
-}*/
-
 void FLSC :: display_cost(){
 
     cout<<"\ntotalCost~~~~~~~~~~~~~~~~\n";
     cout<<"$"<<totalCost<<endl;
+
+}
+
+void FLSC :: GA(){
+
+    while(callIteration>1){
+
+        crossover();
+        mutation();
+        selection();
+        callIteration--;
+    }
 
 }
 
