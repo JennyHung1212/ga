@@ -190,6 +190,7 @@ struct chromosome{
         scale = new int[SCALE];
         locationFacility = new int*[PARK];
         for(int i = 0; i < PARK; i++){
+            scale[i] = 0;
             locationFacility[i] = new int[FACILITY];
             for(int j = 0; j< FACILITY; j++){
                 locationFacility[i][j] = 0;
@@ -201,7 +202,7 @@ struct chromosome{
 };
 
 bool comparison(const chromosome& a, const chromosome& b){
-    return a.numOfExercise > b.numOfExercise;
+    return a.numOfExercise < b.numOfExercise;
 }
 
 
@@ -273,7 +274,7 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
     		optimal_facility_area[i][j]=0;
     	}
     }
-    for (int i = 0; i < poolLength; i++){
+    for (int i = 0; i < poolLength*2; i++){
         chromosome temp;
         chromosomeArray.push_back(temp);
     }
@@ -346,7 +347,6 @@ int** FLSC :: randomZ(int** q, int** T, int num_of_chromosome){
 
 	int js_area = 0;	
 	int is_zero = 0;
-	// time_t xx;
     
     int** facility_floor_area = new int *[parkNum];
 
@@ -431,13 +431,14 @@ double FLSC :: fitness(int num_of_chromosome){
     int equalCount;
     int index;
     for(int i = 0; i < poolLength; i++){
+        equalCount = 0;
         the_same = 0;
-        equalCount=0;
+        cout<<"lala\n";
         for (int j = 0; j < parkNum; j++)
         {
-
-            while(chromosomeArray[i].scale[j] == kid_pool[num_of_chromosome][j]){
+            if(chromosomeArray[i].scale[j] == kid_pool[num_of_chromosome][j]){
                 equalCount++;
+                cout<<equalCount<<"~~"<<endl;              
             } 
            
         }  
@@ -622,7 +623,7 @@ void FLSC :: selection(){
         parent_pool[i] = kid_pool[select.top().second];
         select.pop(); 
     }
-    sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
+    //sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
     for(int i = 0; i < poolLength; i++){
         chromosomeArray.pop_back();
     }
