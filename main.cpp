@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 //global variable
@@ -30,7 +31,7 @@ double* k;
 int* d;
 
 int costIteration = 2;
-int callIteration = 10;
+int callIteration = 2;
 
 //-------------------------------------------------------------------------------------------------------
 //input function
@@ -193,7 +194,7 @@ struct chromosome{
             scale[i] = 0;
             locationFacility[i] = new int[FACILITY];
             for(int j = 0; j< FACILITY; j++){
-                locationFacility[i][j] = 0;
+                locationFacility[i][j] = 1;
             }
         }
         numOfExercise = 0;
@@ -431,20 +432,26 @@ double FLSC :: fitness(int num_of_chromosome){
     int equalCount;
     int index;
     for(int i = 0; i < poolLength; i++){
-        equalCount = 0;
+        equalCount = 10;
         the_same = 0;
         cout<<"lala\n";
-        for (int j = 0; j < parkNum; j++)
-        {
-            if(chromosomeArray[i].scale[j] == kid_pool[num_of_chromosome][j]){
-                equalCount++;
-                cout<<equalCount<<"~~"<<endl;              
-            } 
+        for(int j = 0; j< parkNum; j++){
+            cout<<"*"<<kid_pool[num_of_chromosome][j]<<" "; 
+
+            cout<<"#"<<chromosomeArray[i].scale[j]<<" ";
+        }
+        for (int j = 0; j < parkNum; j++){
+
+            if(chromosomeArray[i].scale[j] != kid_pool[num_of_chromosome][j]){
+                equalCount--;
+                cout<<equalCount<<"~~"<<endl;
+                break;     
+            }
+                    
            
         }  
-        
-        if (equalCount == parkNum)
-        {
+        cout<<endl;
+        if (equalCount == parkNum){
             the_same=1;
             index=i;
             break;
@@ -453,148 +460,162 @@ double FLSC :: fitness(int num_of_chromosome){
     }
 
     if(the_same == 1){
+        cout<<"SAME!!!!!"<<endl;
         return chromosomeArray[index].numOfExercise;
     }
-
     else{
 
-    int** availableDistribution = new int* [parkNum];
-    int** ff_area = new int* [parkNum];
-    int*** exerciseLocation = new int** [manNum]; 
-    int* currentElders = new int[manNum];
-    double tempMax;
-    pair < double, pair<int, int> > pairPreference;
-    vector < vector <pair < double, pair<int, int> > > > vectorPreference(parkNum);
+        int** availableDistribution = new int* [parkNum];
+        int** ff_area = new int* [parkNum];
+        int*** exerciseLocation = new int** [manNum]; 
+        int* currentElders = new int[manNum];
+        double tempMax;
+        pair < double, pair<int, int> > pairPreference;
+        vector < vector <pair < double, pair<int, int> > > > vectorPreference(parkNum);
 
-    for (int i = 0; i< manNum; i++){
-        currentElders[i] = d[i];
-        exerciseLocation[i] = new int*[parkNum];
-        for(int j = 0; j< parkNum; j++){
-            exerciseLocation[i][j] = new int[facilityNum];
-            for (int k = 0; k < facilityNum; k++){
-                exerciseLocation[i][j][k] = 0;
+        for (int i = 0; i< manNum; i++){
+            currentElders[i] = d[i];
+            exerciseLocation[i] = new int*[parkNum];
+            for(int j = 0; j< parkNum; j++){
+                exerciseLocation[i][j] = new int[facilityNum];
+                for (int k = 0; k < facilityNum; k++){
+                    exerciseLocation[i][j][k] = 0;
+                }
             }
+
         }
 
-    }
-
-    for (int i = 0; i< parkNum; i++) {
-        ff_area[i] = new int[facilityNum];
-        availableDistribution[i] = new int[facilityNum];
-        
-    }
-    for (int i = 0; i< parkNum; i++) {
-        for (int j = 0; j < facilityNum; j++){
-            ff_area[i][j]=0;
-        }
-    }
-
-
-
-    for(int i = 0; i < costIteration; i++){
-
-        tempMax=0;
-        double tempPeople=0;
-        ff_area = randomZ(q, T, num_of_chromosome);
-        while(cost(f, c, ff_area, num_of_chromosome) > totalBudget){
-            ff_area = randomZ(q, T, num_of_chromosome);
+        for (int i = 0; i< parkNum; i++) {
+            ff_area[i] = new int[facilityNum];
+            availableDistribution[i] = new int[facilityNum];
+            
         }
         for (int i = 0; i< parkNum; i++) {
             for (int j = 0; j < facilityNum; j++){
-                availableDistribution[i][j]= ff_area[i][j]*k[j];
+                ff_area[i][j]=0;
             }
-            cout<<endl;
         }
 
 
-        while(1){
-            bool negative = 1;
-            for(int i = 0; i < manNum; i++){
-                for(int j = 0; j < parkNum; j++){
-                    for(int k = 0; k < facilityNum; k++){
-                        pairPreference.first=p[i][j][k];
-                        pairPreference.second.first=j;
-                        pairPreference.second.second=k;
-                        vectorPreference[j].push_back(pairPreference);
-                    }
+
+        for(int i = 0; i < costIteration; i++){
+
+            tempMax=0;
+            double tempPeople=0;
+            ff_area = randomZ(q, T, num_of_chromosome);
+            while(cost(f, c, ff_area, num_of_chromosome) > totalBudget){
+                ff_area = randomZ(q, T, num_of_chromosome);
+            }
+            for (int i = 0; i< parkNum; i++) {
+                for (int j = 0; j < facilityNum; j++){
+                    availableDistribution[i][j]= ff_area[i][j]*k[j];
                 }
-
-                priority_queue < pair < double, pair<int, int> > > queuePreference;
-
-                for(int j = 0; j < parkNum; j++){
-                    for(int k = 0; k < facilityNum; k++){
-                        queuePreference.push(vectorPreference[j][k]);
-                    }
-                }
-
-
-                while(availableDistribution[queuePreference.top().second.first][queuePreference.top().second.second]==0 && !queuePreference.empty()){
-                    p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
-                    queuePreference.pop();
-
-                }
-
-                if(currentElders[i] <= availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] ){
-
-                    exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += currentElders[i];
-                    availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] -= currentElders[i];
-                    currentElders[i]=0;
-                    p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
-                }else{
-
-                    currentElders[i] -=  availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
-                    exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += 
-                        availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
-                    availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second]=0;
-                    p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
-                }
-                               
+                cout<<endl;
             }
 
-            for(int i = 0; i < manNum; i++){
-                for(int j = 0; j < parkNum; j++){
-                    for(int k = 0; k < facilityNum; k++){
-                        if(p[i][j][k] != -1){
-                            negative = 0;
+
+            while(1){
+                bool negative = 1;
+                for(int i = 0; i < manNum; i++){
+                    for(int j = 0; j < parkNum; j++){
+                        for(int k = 0; k < facilityNum; k++){
+                            pairPreference.first=p[i][j][k];
+                            pairPreference.second.first=j;
+                            pairPreference.second.second=k;
+                            vectorPreference[j].push_back(pairPreference);
+                        }
+                    }
+
+                    priority_queue < pair < double, pair<int, int> > > queuePreference;
+
+                    for(int j = 0; j < parkNum; j++){
+                        for(int k = 0; k < facilityNum; k++){
+                            queuePreference.push(vectorPreference[j][k]);
+                        }
+                    }
+
+
+                    while(availableDistribution[queuePreference.top().second.first][queuePreference.top().second.second]==0 && !queuePreference.empty()){
+                        p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                        queuePreference.pop();
+
+                    }
+
+                    if(currentElders[i] <= availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] ){
+
+                        exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += currentElders[i];
+                        availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] -= currentElders[i];
+                        currentElders[i]=0;
+                        p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                    }else{
+
+                        currentElders[i] -=  availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
+                        exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += 
+                            availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
+                        availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second]=0;
+                        p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                    }
+                                   
+                }
+
+                for(int i = 0; i < manNum; i++){
+                    for(int j = 0; j < parkNum; j++){
+                        for(int k = 0; k < facilityNum; k++){
+                            if(p[i][j][k] != -1){
+                                negative = 0;
+                            }
                         }
                     }
                 }
-            }
 
-            if(negative == 1){
-                break;
-            }
+                if(negative == 1){
+                    cout<<"NNNNNNN";
+                    break;
+                }
 
-        }
-        
-        for(int i = 0; i < manNum; i++){
-            for(int j = 0; j < parkNum; j++){
-                for(int k = 0; k < facilityNum; k++){
-                    tempPeople += exerciseLocation[i][j][k];
+            }
+            
+            for(int i = 0; i < manNum; i++){
+                for(int j = 0; j < parkNum; j++){
+                    for(int k = 0; k < facilityNum; k++){
+                        tempPeople += exerciseLocation[i][j][k];
+                    }
                 }
             }
+
+            if (tempPeople>=tempMax){
+                cout<<"~~~~~~~~~~~";
+                tempMax = tempPeople;
+                optimal_facility_area = ff_area;   
+            }
+
+        } 
+
+        cout<<"$$$$$$$$$$$$$\n";
+        chromosome tempChromosome;
+        //tempChromosome.scale = kid_pool[num_of_chromosome];
+        tempChromosome.numOfExercise = tempMax;
+
+        for(int i = 0; i < parkNum; i++){
+            tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
+        }
+        for(int i = 0; i < parkNum; i++){
+            for(int j = 0; j < facilityNum; j++){
+                cout<<optimal_facility_area[i][j]<<" ";
+                //tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
+            }
+            cout<< endl;
         }
 
-        if (tempPeople>=tempMax){
-            tempMax = tempPeople;
-            optimal_facility_area = ff_area;   
-        }
-
-    } 
+        //tempChromosome.locationFacility = optimal_facility_area;
 
 
-    chromosome tempChromosome;
-    tempChromosome.scale = kid_pool[num_of_chromosome];
-    tempChromosome.numOfExercise = tempMax;
-    tempChromosome.locationFacility = optimal_facility_area;
+        //chromosomeArray.push_back(tempChromosome);
+            
 
+        return tempMax;
 
-    chromosomeArray.push_back(tempChromosome);
-        
-
-    return tempMax;
-
-}
+    }
 
 }
 
@@ -623,7 +644,7 @@ void FLSC :: selection(){
         parent_pool[i] = kid_pool[select.top().second];
         select.pop(); 
     }
-    //sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
+    sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
     for(int i = 0; i < poolLength; i++){
         chromosomeArray.pop_back();
     }
@@ -679,6 +700,8 @@ void FLSC :: display_cost(){
 }
 
 void FLSC :: GA(){
+
+    original_gene(S);
 
     while(callIteration>1){
         crossover();
