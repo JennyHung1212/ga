@@ -15,7 +15,7 @@ using namespace std;
 
 //global variable
 
-int FILE_pos = 1;
+int FILE_pos = 10;
 int MAN;
 int PARK;
 int FACILITY;
@@ -714,8 +714,10 @@ void FLSC :: display_cost(){
 void FLSC :: GA(){
 
     original_gene(S);
+                display_parent();
 
     while(callIteration>1){
+
         crossover();
         mutation();
         cout<<"yoooo\n";
@@ -740,6 +742,8 @@ void FLSC :: GA(){
         }
         cout<<endl;
     }
+
+    display_parent();
 
 }
 
