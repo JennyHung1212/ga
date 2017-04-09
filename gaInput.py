@@ -8,10 +8,7 @@ import numpy as np
 MAN = int(sys.argv[1])
 PARK = int(sys.argv[2])
 FACILITY = int(sys.argv[3])
-<<<<<<< HEAD
 #BUDGET = int(sys.argv[4])
-=======
->>>>>>> f50ca2fddebe5d67c18d322334dc67b573526f61
 SCALE = 5
 TRY_NUM = 10
 random.seed(datetime.now())

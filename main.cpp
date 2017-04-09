@@ -321,8 +321,8 @@ void FLSC :: crossover (){
     }
 
 
-    for (int i = 1; i < poolLength/2; i++){
-        for (int j = 0; j < poolLength/2; j++){
+    for (int i = 1; i <= poolLength/2; i++){
+        for (int j = 0; j < parkNum/2; j++){
             kid_pool[2*i-1][j] = parent_pool[2*i-1][j];
         }
 
@@ -332,13 +332,12 @@ void FLSC :: crossover (){
         
     }
 
-    for (int i = 0; i < parkNum; i++){       
-        kid_pool[poolLength-1][i] = parent_pool[poolLength-1][i];
-    }
-
-    for (int i = parkNum/2; i < parkNum; i++){       
-        kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
-    }
+    // for (int i = 0; i < parkNum; i++){       
+    //     kid_pool[poolLength-1][i] = parent_pool[poolLength-1][i];
+    // }
+    // for (int i = parkNum/2; i < parkNum; i++){       
+    //     kid_pool[poolLength-1][i]=parent_pool[poolLength-2][i];
+    // }
 
     for (int i = poolLength ; i < 2*poolLength; i++)
     {
@@ -510,7 +509,7 @@ double FLSC :: fitness(int num_of_chromosome){
 
 
 
-        for(int i = 0; i < costIteration; i++){
+        for(int iter = 0; iter < costIteration; iter++){
 
             tempMax=0;
             double tempPeople=0;
@@ -570,10 +569,10 @@ double FLSC :: fitness(int num_of_chromosome){
                                    
                 }
 
-                for(int i = 0; i < manNum; i++){
+                for(int g = 0; g < manNum; g++){
                     for(int j = 0; j < parkNum; j++){
                         for(int k = 0; k < facilityNum; k++){
-                            if(p[i][j][k] != -1){
+                            if(p[g][j][k] != -1){
                                 negative = 0;
                             }
                         }
@@ -587,10 +586,10 @@ double FLSC :: fitness(int num_of_chromosome){
 
             }
             
-            for(int i = 0; i < manNum; i++){
+            for(int g = 0; g < manNum; g++){
                 for(int j = 0; j < parkNum; j++){
                     for(int k = 0; k < facilityNum; k++){
-                        tempPeople += exerciseLocation[i][j][k];
+                        tempPeople += exerciseLocation[g][j][k];
                     }
                 }
             }
@@ -608,19 +607,19 @@ double FLSC :: fitness(int num_of_chromosome){
         tempChromosome.numOfExercise = tempMax;
 
 
-        for(int i = 0; i < parkNum; i++){
-            tempChromosome.scale[i] = kid_pool[num_of_chromosome][i];
+        for(int g = 0; g < parkNum; g++){
+            tempChromosome.scale[g] = kid_pool[num_of_chromosome][g];
             // cout<<tempChromosome.scale[i]<<"* ";
         }
 
         tempChromosome.locationFacility = new int*[parkNum];
-        for(int i = 0; i < parkNum; i++){
-            tempChromosome.locationFacility[i] = new int[facilityNum];
+        for(int g = 0; g < parkNum; g++){
+            tempChromosome.locationFacility[g] = new int[facilityNum];
         }
-        for(int i = 0; i < parkNum; i++){
+        for(int g = 0; g < parkNum; g++){
 
             for(int j = 0; j < facilityNum; j++){
-                tempChromosome.locationFacility[i][j] = optimal_facility_area[i][j];
+                tempChromosome.locationFacility[g][j] = optimal_facility_area[g][j];
             }
             cout<< endl;
         }
@@ -657,7 +656,12 @@ void FLSC :: selection(){
         select.pop(); 
     }
     sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
-    for(int i = 0; i < poolLength; i++){
+
+    // for(int i = 0; i < poolLength; i++){
+    //     chromosomeArray.pop_back();
+    // }
+
+    while (chromosomeArray.size()>20){
         chromosomeArray.pop_back();
     }
 
@@ -725,19 +729,19 @@ void FLSC :: GA(){
     }
 
     cout<<"Max~~~~~~~~~~~~\n";
-    cout<<chromosomeArray[0].numOfExercise<<endl;
+    cout<<chromosomeArray.front().numOfExercise<<endl;
 
     cout<<"y~~~~~~~~~~~~\n";
     for (int i = 0; i < parkNum; i++)
     {
-        cout<<chromosomeArray[0].scale[i]<<" ";
+        cout<<chromosomeArray.front().scale[i]<<" ";
     }
     cout<<endl;
 
     cout<<"Z~~~~~~~~~~~\n";
     for (int i = 0; i < parkNum; i++){
         for (int j = 0; j < facilityNum; j++){
-            cout<<chromosomeArray[0].locationFacility[i][j]<<" ";
+            cout<<chromosomeArray.front().locationFacility[i][j]<<" ";
         }
         cout<<endl;
     }
@@ -769,10 +773,10 @@ int main(int argc,char* argv[]) {
     // //test.cost(f, c, 0);
    // test.selection();
 
-    // test.display_cost();
+     //test.display_cost();
     // //test.display_facility();
-    // test.display_kid();
-    // test.display_parent();
+     //test.display_parent();
+     //test.display_kid();
 
 
 
