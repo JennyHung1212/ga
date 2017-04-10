@@ -31,6 +31,7 @@ int** q;
 int* c;
 double* k;
 int* d;
+int iteration = 0;
 
 int costIteration = 2;
 int callIteration = 5;
@@ -203,9 +204,6 @@ struct chromosome{
         numOfExercise = 0;
     }
 
-    
-
-
 };
 
 bool comparison(const chromosome& a, const chromosome& b){
@@ -291,12 +289,9 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
 
 
 void FLSC :: original_gene(int** S){
-<<<<<<< HEAD
+
 	int scale = 0;
     srand((unsigned)time(NULL));
-=======
-    int scale = 0;
->>>>>>> 57a16204dbfd63f44f592d5f78b11d248bcfd679
     for(int i=0; i<poolLength; i++){
         for(int j=0; j< parkNum; j++){
             while(1){
@@ -398,7 +393,7 @@ int** FLSC :: randomZ(int** q, int** T, int num_of_chromosome){
             if(is_zero == 1){
                 break;
             }else{
-                for(int j =0; j<FACILITY; j++){
+                for(int j =0; j<facilityNum; j++){
                     sum = sum + facility_floor_area[i][j];
                 }
             }
@@ -419,14 +414,14 @@ int FLSC :: cost(int**f, int*c, int** facility_floor_area, int num_of_chromosome
     int c_cost = 0;
     int total_cost = 0;
 
-    for(int i = 0; i < PARK; i++){
+    for(int i = 0; i < parkNum; i++){
         if(kid_pool[num_of_chromosome][i] != 0){
             f_cost += f[i][kid_pool[num_of_chromosome][i]-1];
         }
 
     }
-    for(int i = 0; i < PARK; i++){
-        for(int j = 0; j < FACILITY; j++){
+    for(int i = 0; i < parkNum; i++){
+        for(int j = 0; j < facilityNum; j++){
             c_cost += c[j] * facility_floor_area[i][j];
         }
     }
@@ -441,6 +436,9 @@ double FLSC :: fitness(int num_of_chromosome){
     bool the_same ;
     int equalCount;
     int index;
+    iteration ++;
+    cout<< "ITERATION: "<<iteration<<endl;
+
     for(int i = 0; i < poolLength; i++){
         equalCount = 10;
         the_same = 0;
@@ -449,7 +447,7 @@ double FLSC :: fitness(int num_of_chromosome){
             cout<<"*"<<kid_pool[num_of_chromosome][j]<<" "; 
 
         }
-        cout<<endl<<endl;
+        cout<<"/";
 
         for(int j = 0; j< parkNum; j++){
 
@@ -612,6 +610,10 @@ double FLSC :: fitness(int num_of_chromosome){
 
         for(int g = 0; g < parkNum; g++){
             tempChromosome.scale[g] = kid_pool[num_of_chromosome][g];
+            // if (tempChromosome.scale[g]>5)
+            // {
+            //     cout<<"error @ " << g<< " " <<num_of_chromosome <<endl;
+            // }
             // cout<<tempChromosome.scale[i]<<"* ";
         }
 
@@ -625,6 +627,7 @@ double FLSC :: fitness(int num_of_chromosome){
                 tempChromosome.locationFacility[g][j] = optimal_facility_area[g][j];
             }
         }
+
 
 
         chromosomeArray.push_back(tempChromosome);
@@ -656,18 +659,23 @@ void FLSC :: selection(){
         parent_pool[i] = kid_pool[select.top().second];
         select.pop(); 
     }
-    sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
-<<<<<<< HEAD
-    for(int i = 0; i < poolLength*2; i++){
-=======
 
-    // for(int i = 0; i < poolLength; i++){
-    //     chromosomeArray.pop_back();
-    // }
+    
+
+    sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
 
     while (chromosomeArray.size()>20){
->>>>>>> 57a16204dbfd63f44f592d5f78b11d248bcfd679
-        chromosomeArray.pop_back();
+    
+            chromosomeArray.pop_back();
+    }
+
+    cout<<"Selection~~~~~~~~~~~~~~~~~~~~~\n";
+
+    for (int i = 0; i < 20; i++)
+    {
+         if(chromosomeArray[i].scale[9]>5 || chromosomeArray[i].scale[9]<0){
+            cout<<"error~~~\n"<<"@" << i <<endl;
+        }
     }
 
 }
@@ -722,10 +730,11 @@ void FLSC :: GA(){
 
     original_gene(S);
 
-    while(callIteration>1){
+    while(callIteration>=1){
 
         crossover();
         mutation();
+        cout<<"SIZE~"<<chromosomeArray.size()<<endl;
         cout<<"yoooo\n";
         selection();
         callIteration--;
