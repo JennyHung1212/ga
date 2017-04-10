@@ -290,7 +290,7 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
 
 void FLSC :: original_gene(int** S){
 
-	int scale = 0;
+    int scale = 0;
     srand((unsigned)time(NULL));
     for(int i=0; i<poolLength; i++){
         for(int j=0; j< parkNum; j++){
@@ -659,6 +659,8 @@ void FLSC :: selection(){
         parent_pool[i] = kid_pool[select.top().second];
         select.pop(); 
     }
+
+    
 
     sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
 
