@@ -514,6 +514,15 @@ double FLSC :: fitness(int num_of_chromosome){
 
         for(int iter = 0; iter < costIteration; iter++){
 
+            // for(int g = 0; g < manNum; g++){
+            //     for(int j = 0; j < parkNum; j++){
+            //         for(int k = 0; k < facilityNum; k++){
+            //             p[g][j][k] = -1;
+                        
+            //         }
+            //     }
+            // }
+
             tempMax=0;
             double tempPeople=0;
             ff_area = randomZ(q, T, num_of_chromosome);
@@ -530,10 +539,24 @@ double FLSC :: fitness(int num_of_chromosome){
 
             while(1){
                 bool negative = 1;
+                int *** p1 = new int ** [manNum];
+                for (int i = 0; i< manNum; i++){
+                    p1[i] = new int*[parkNum];
+                    for(int j = 0; j< parkNum; j++){
+                        p1[i][j] = new int[facilityNum];
+                            for (int k = 0; k < facilityNum; k++){
+                                p1[i][j][k] = p[i][j][k];
+                                }
+                            }
+
+                    }
+
+            
+      
                 for(int i = 0; i < manNum; i++){
                     for(int j = 0; j < parkNum; j++){
                         for(int k = 0; k < facilityNum; k++){
-                            pairPreference.first=p[i][j][k];
+                            pairPreference.first=p1[i][j][k];
                             pairPreference.second.first=j;
                             pairPreference.second.second=k;
                             vectorPreference[j].push_back(pairPreference);
@@ -550,7 +573,7 @@ double FLSC :: fitness(int num_of_chromosome){
 
 
                     while(availableDistribution[queuePreference.top().second.first][queuePreference.top().second.second]==0 && !queuePreference.empty()){
-                        p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                        p1[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
                         queuePreference.pop();
 
                     }
@@ -560,14 +583,14 @@ double FLSC :: fitness(int num_of_chromosome){
                         exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += currentElders[i];
                         availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second] -= currentElders[i];
                         currentElders[i]=0;
-                        p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                        p1[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
                     }else{
 
                         currentElders[i] -=  availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
                         exerciseLocation[i][queuePreference.top().second.first][queuePreference.top().second.second] += 
                             availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second];
                         availableDistribution [queuePreference.top().second.first][queuePreference.top().second.second]=0;
-                        p[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
+                        p1[i][queuePreference.top().second.first][queuePreference.top().second.second]= -1;
                     }
                                    
                 }
@@ -575,13 +598,14 @@ double FLSC :: fitness(int num_of_chromosome){
                 for(int g = 0; g < manNum; g++){
                     for(int j = 0; j < parkNum; j++){
                         for(int k = 0; k < facilityNum; k++){
-                            if(p[g][j][k] != -1){
+                            if(p1[g][j][k] != -1){
                                 negative = 0;
                             }
                         }
                     }
                 }
 
+           
                 if(negative == 1){
                     break;
                 }
