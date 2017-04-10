@@ -657,16 +657,12 @@ void FLSC :: selection(){
         select.pop(); 
     }
     sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
-<<<<<<< HEAD
-    for(int i = 0; i < poolLength*2; i++){
-=======
 
     // for(int i = 0; i < poolLength; i++){
     //     chromosomeArray.pop_back();
     // }
 
     while (chromosomeArray.size()>20){
->>>>>>> 57a16204dbfd63f44f592d5f78b11d248bcfd679
         chromosomeArray.pop_back();
     }
 
