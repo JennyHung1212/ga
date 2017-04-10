@@ -34,7 +34,9 @@ int* d;
 int iteration = 0;
 
 int costIteration = 2;
-int callIteration = 5;
+int callIteration = 0;
+int terminalCount = 100;
+int tempNumOfPeople = 0;
 
 //-------------------------------------------------------------------------------------------------------
 //input function
@@ -755,7 +757,7 @@ void FLSC :: GA(){
         }
     }    
 
-    while(callIteration>=1){
+    while(callIteration<terminalCount){
 
         crossover();
         /*cout<<"SOON AFTER CROSSOVER~~~~~~~~~~~~~~~~~~~~~\n";
@@ -776,7 +778,19 @@ void FLSC :: GA(){
             }
         }*/         
         selection();
-        callIteration--;
+        if (chromosomeArray.front().numOfExercise>tempNumOfPeople)
+        {
+           tempNumOfPeople = chromosomeArray.front().numOfExercise;
+        }
+
+        else if (chromosomeArray.front().numOfExercise == tempNumOfPeople)
+        {
+            callIteration ++; 
+        }
+        
+
+
+        //callIteration--;
     }
 
     cout<<"Max~~~~~~~~~~~~\n";
