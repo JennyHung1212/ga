@@ -751,8 +751,6 @@ void FLSC :: GA(){
                 cout<<"error~~~\n"<<"@" << i <<endl;
             }
         }*/         
-        cout<<"SIZE~"<<chromosomeArray.size()<<endl;
-        cout<<"yoooo\n";
         selection();
         callIteration--;
     }
