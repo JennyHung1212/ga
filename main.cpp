@@ -289,7 +289,6 @@ FLSC :: FLSC (int man, int park, int facility, int budget){
 
 
 void FLSC :: original_gene(int** S){
-<<<<<<< HEAD
 
 	int scale = 0;
     srand((unsigned)time(NULL));
@@ -660,19 +659,10 @@ void FLSC :: selection(){
         parent_pool[i] = kid_pool[select.top().second];
         select.pop(); 
     }
-<<<<<<< HEAD
-    sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
-=======
->>>>>>> 493889fb21353faf757385cf612b95d15ddbafea
-
-    
 
     sort(chromosomeArray.begin(), chromosomeArray.end(), comparison);
 
     while (chromosomeArray.size()>20){
-<<<<<<< HEAD
-        chromosomeArray.pop_back();
-=======
     
             chromosomeArray.pop_back();
     }
@@ -684,7 +674,6 @@ void FLSC :: selection(){
          if(chromosomeArray[i].scale[9]>5 || chromosomeArray[i].scale[9]<0){
             cout<<"error~~~\n"<<"@" << i <<endl;
         }
->>>>>>> 493889fb21353faf757385cf612b95d15ddbafea
     }
 
 }
